@@ -1,8 +1,14 @@
 # DAT257 - Gyro
 
-This is a repository for group Gyro in the course DAT257 Agile Software Development @ Chalmers
+This is a repository for group Gyro in the course DAT257 Agile Software Development @ Chalmers.
+Most of the files in the root directory can be ignored, they are mostly configuration and misc files.
 
-## Folders
+## Gradle
+This project uses gradle for dependency and build management, to add a dependency to a module of the project, this should be added to that modules `build.gradle.kts`.
+
+You can either use your IDE's integrated gradle toolkit or the gradle CLI for this.
+
+## Modules
 ### app
 This folder is for the app frontend of the project, code should originate from the `src/main/kotlin/dat257/gyro` folder
 
