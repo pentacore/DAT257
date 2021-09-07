@@ -8,6 +8,16 @@ This project uses gradle for dependency and build management, to add a dependenc
 
 You can either use your IDE's integrated gradle toolkit or the gradle CLI for this.
 
+### Adding a dependency
+Adding a dependency is as easy as adding one of the following into the designated `build.gradle.kts` file in the dependencies field. \
+The rows are formatted like this: `%TYPE_OF_DEPENDENCY%("%DEPENDENCY%:%VERSION%")` examples follows below
+
+#### For the end product
+`implementation("ch.qos.logback:logback-classic:1.2.3")`
+
+#### Only for the product tests
+`testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.5.0")`
+
 ## Modules
 ### app
 This folder is for the app frontend of the project, code should originate from the `/app/src/main/kotlin/dat257/gyro` folder
