@@ -10,7 +10,8 @@ You can either use your IDE's integrated gradle toolkit or the gradle CLI for th
 
 ### Adding a dependency
 Adding a dependency is as easy as adding one of the following into the designated `build.gradle.kts` file in the dependencies field. \
-The rows are formatted like this: `%TYPE_OF_DEPENDENCY%("%DEPENDENCY%:%VERSION%")` examples follows below
+These dependencies can either be kotlin dependencies or even java dependencies (Kotlin can use both types). \
+The rows are formatted like this: `%TYPE_OF_DEPENDENCY%("%DEPENDENCY%:%VERSION%")` examples follows below.
 
 #### For the end product
 `implementation("ch.qos.logback:logback-classic:1.2.3")`
