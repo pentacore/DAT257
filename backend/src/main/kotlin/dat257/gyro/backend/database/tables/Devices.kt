@@ -1,10 +1,6 @@
 package dat257.gyro.backend.database.tables
 
 import dat257.gyro.backend.helpers.StringIdTable
-import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.dao.id.IdTable
-import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.`java-time`.datetime
 
 // TODO: Set the ID column length to the correct hwid length

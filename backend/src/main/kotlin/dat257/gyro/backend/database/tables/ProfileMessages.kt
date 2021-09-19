@@ -6,6 +6,7 @@ import org.jetbrains.exposed.sql.`java-time`.datetime
 object ProfileMessages: IntIdTable() {
     val recipient = reference("profile_id", Profiles)
     val sender = reference("sender", Profiles)
+    val title = text("title")
     val message = text("message")
     //Sender IP address
     val ipAddress = text("ip_address")
