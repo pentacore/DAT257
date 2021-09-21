@@ -9,6 +9,11 @@ version = "1.0-SNAPSHOT"
 
 dependencies {
     implementation(project(":shared"))
+    implementation("org.jetbrains.exposed:exposed-core:0.34.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.34.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.34.1")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.34.1")
+    implementation("org.postgresql:postgresql:42.2.2")
     testImplementation(kotlin("test"))
 }
 
