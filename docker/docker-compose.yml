@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+#  TODO
+#  backend:
+#    build: backend
+#    ports:
+#      - 8080:8080
+#    restart: on-failure
+#    env_file:
+#      - .env
+  database:
+    image: postgres
+    ports:
+      - 5432:5432
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=gyro
+      - POSTGRES_PASSWORD=gyro
+      - POSTGRES_DB=gyro
+      - POSTGRES_ROOT_PASSWORD=root
+    env_file:
+      - .env
