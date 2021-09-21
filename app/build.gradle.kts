@@ -1,21 +1,41 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
+apply(plugin = "kotlin-android")
 plugins {
-    kotlin("jvm") version "1.5.10"
+    id("com.android.application")
+    kotlin("android")
 }
 
-group = "dat257.gyro"
-version = "1.0-SNAPSHOT"
+android {
+    compileSdkVersion(31)
+    defaultConfig {
+        applicationId = "dat257.gyro"
+        minSdkVersion(21)
+        targetSdkVersion(31)
+        versionCode = 1
+        versionName = "1.0"
+        testInstrumentationRunner = "androidx.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+    }
+    compileOptions {
+        sourceCompatibility(1.8)
+        targetCompatibility(1.8)
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
 dependencies {
     implementation(project(":shared"))
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnit()
-}
-
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "1.8"
+    implementation("androidx.core:core-ktx:1.6.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+    testImplementation("junit:junit:4.+")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
