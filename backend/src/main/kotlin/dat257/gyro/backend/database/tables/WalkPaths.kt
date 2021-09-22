@@ -10,7 +10,7 @@ object WalkPaths: IntIdTable() {
     val name = text("name")
     val description = text("description")
     val public = bool("public")
-    val classification = reference("classification_id", Column<Int>(WalkPathClassifications, "walk_path_id", IntegerColumnType()))
+    val classification = reference("classification_id", Column<Int>(WalkPathClassifications, "walk_path_id", IntegerColumnType())).uniqueIndex()
     val createdAt = datetime("created_at")
     val updatedAt = datetime("updated_at")
 }

@@ -31,3 +31,11 @@ jobs:
         run: ./gradlew build
       - name: Run Tests
         run: ./gradlew check
+      - name: Archive Test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: |
+            backend/build/test-results/**/*.xml
+            app/build/test-results/**/*.xml
+            shared/build/test-results/**/*.xml
