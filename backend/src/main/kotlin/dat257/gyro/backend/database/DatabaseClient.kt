@@ -4,14 +4,15 @@ import dat257.gyro.backend.database.tables.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class DatabaseClient {
-    private val host = System.getenv("POSTGRES_HOST") ?: "127.0.0.1"
-    private val port = System.getenv("POSTGRES_HOST") ?: "5432"
-    private val user = System.getenv("POSTGRES_HOST") ?: "gyro"
-    private val password = System.getenv("POSTGRES_HOST") ?: "gyro"
-    private val name = System.getenv("POSTGRES_HOST") ?: "gyro"
-    private val tempDb: Boolean = (System.getenv("TEMP_DB") ?: "false") == "true"
-    private val migrate: Boolean = (System.getenv("RUN_DB_MIGRATIONS") ?: "true") == "true"
+class DatabaseClient(
+    private val host: String = System.getenv("POSTGRES_HOST") ?: "127.0.0.1",
+    private val port: String = System.getenv("POSTGRES_PORT") ?: "5432",
+    private val name: String = System.getenv("POSTGRES_NAME") ?: "gyro",
+    private val user: String = System.getenv("POSTGRES_USER") ?: "gyro",
+    private val password: String = System.getenv("POSTGRES_PASS") ?: "gyro",
+    private val tempDb: Boolean = (System.getenv("TEMP_DB") ?: "false").lowercase() == "true",
+    private val migrate: Boolean = (System.getenv("RUN_DB_MIGRATIONS") ?: "true").lowercase() == "true"
+) {
     private val tables = arrayOf(
         Devices, PictureRatings, Pictures, ProfileBlocks, ProfileFriends, ProfileMessages, ProfilePreferences,
         Profiles, WalkHistories, WalkPathClassifications, WalkPathNodes, WalkPathRatings, WalkPaths

@@ -10,9 +10,9 @@ services:
 #    env_file:
 #      - .env
   database:
-    image: postgres
+    build: database
     ports:
-      - 5432:5432
+      - "5432:5432"
     restart: on-failure
     environment:
       - POSTGRES_USER=gyro
