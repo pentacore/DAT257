@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdk = 31
     defaultConfig {
         applicationId = "dat257.gyro"
-        minSdkVersion(21)
-        targetSdkVersion(31)
+        minSdk = 21
+        targetSdk = 31
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.support.test.runner.AndroidJUnitRunner"

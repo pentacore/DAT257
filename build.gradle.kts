@@ -6,7 +6,6 @@ version = "1.0-SNAPSHOT"
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
     }
 }
@@ -16,7 +15,6 @@ buildscript {
         google()
         gradlePluginPortal()
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.2")
