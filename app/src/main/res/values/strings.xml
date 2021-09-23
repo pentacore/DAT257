@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DreamTeamApp</string>
+    <string name="button_start_map_activity">Show me the map!</string>
 </resources>
