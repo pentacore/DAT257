@@ -1,7 +1,6 @@
 package dat257.gyro
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -14,7 +13,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 
 class MapActivity : AppCompatActivity() {
-    private val REQUEST_PERMISSIONS_REQUEST_CODE = 1
+    private val requestPermissionRequestCode = 1
     private lateinit var map : MapView
     private lateinit var controller : IMapController
 
@@ -23,18 +22,18 @@ class MapActivity : AppCompatActivity() {
 
         // load/initialize the osmdroid configuration
         // This won't work unless you have imported this: org.osmdroid.config.Configuration.*
-        getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
+        getInstance().load(this, this.getPreferences(0))
         // setting this before the layout is inflated is a good idea
         // it 'should' ensure that the map has a writable location for the map cache, even without permissions
         // if no tiles are displayed, you can try overriding the cache path using Configuration.getInstance().setCachePath
         // see also StorageUtils
-        // note, the load method also sets the HTTP User Agent to your application's package name, if you abuse osm's
+        // note, the load method also sets the HTTP User Agent to your application's package name; abusing the osm
         // tile servers will get you banned based on this string.
 
         // inflate and create the map
         setContentView(R.layout.activity_map)
 
-        map = findViewById<MapView>(R.id.map)
+        map = findViewById(R.id.map)
         map.setTileSource(TileSourceFactory.MAPNIK)
 
         // set zoom and lat/lng for initial view
@@ -74,7 +73,7 @@ class MapActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 permissionsToRequest.toTypedArray(),
-                REQUEST_PERMISSIONS_REQUEST_CODE)
+                requestPermissionRequestCode)
         }
     }
 }
