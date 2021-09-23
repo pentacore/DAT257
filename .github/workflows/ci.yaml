@@ -29,3 +29,23 @@ jobs:
         uses: gradle/wrapper-validation-action@v1.0.4
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Run Tests
+        run: ./gradlew check
+      - name: Archive Test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: |
+            backend/build/test-results/**/*.xml
+            app/build/test-results/**/*.xml
+            shared/build/test-results/**/*.xml
+          retention-days: 7
+      - name: Archive Test Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-report
+          path: |
+            backend/build/reports/**/*
+            app/build/reports/**/*
+            shared/build/reports/**/*
+          retention-days: 7

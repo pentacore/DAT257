@@ -4,7 +4,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.`java-time`.datetime
 
 object WalkPathClassifications: IntIdTable() {
-    val walkPath = reference("walk_path_id", WalkPaths)
+    val walkPath = reference("walk_path_id", WalkPaths).uniqueIndex()
     val pathType = text("path_type")
     val areaType = text("area_type")
     val handicapFriendly = bool("handicap_friendly")
