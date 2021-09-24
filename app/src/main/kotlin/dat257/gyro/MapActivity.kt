@@ -25,6 +25,7 @@ import org.osmdroid.views.overlay.Marker
 class MapActivity : AppCompatActivity() {
     private val requestPermissionRequestCode = 1
 
+    private lateinit var coordinateModel: Coordinator
     //Map
     private lateinit var map: MapView
     private lateinit var controller: IMapController
