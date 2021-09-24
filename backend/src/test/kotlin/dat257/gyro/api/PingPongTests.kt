@@ -20,4 +20,5 @@ class PingPongTests: BaseTest() {
         val response = app(org.http4k.core.Request(Method.GET, "/pong"))
         assertEquals("ping", response.bodyString())
     }
+
 }
