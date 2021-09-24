@@ -1,9 +1,17 @@
 package dat257.gyro
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
+import android.widget.TextView
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.google.android.material.internal.ContextUtils.getActivity
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.api.IMapController
 
@@ -14,11 +22,20 @@ import org.osmdroid.views.MapView
 
 class MapActivity : AppCompatActivity() {
     private val requestPermissionRequestCode = 1
+
+    //Map
     private lateinit var map : MapView
     private lateinit var controller : IMapController
 
+    //Coordinates
+    private lateinit var coordinateView: TextView
+    private lateinit var mLocationManager: LocationManager
+    private var locationRefreshDistance: Float = 1.01f // exempel vet inte enhet
+    private var locationRefreshTime: Long = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mLocationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // load/initialize the osmdroid configuration
         // This won't work unless you have imported this: org.osmdroid.config.Configuration.*
@@ -33,8 +50,34 @@ class MapActivity : AppCompatActivity() {
         // inflate and create the map
         setContentView(R.layout.activity_map)
 
+        coordinateView  = findViewById(R.id.CoordText)
+
         map = findViewById(R.id.map)
         map.setTileSource(TileSourceFactory.MAPNIK)
+        val mLocationListener =
+            LocationListener { setCordText(it.longitude, it.latitude, it.altitude) }
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+
+        mLocationManager.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER, locationRefreshTime,
+            locationRefreshDistance, mLocationListener
+        )
 
         // set zoom and lat/lng for initial view
         controller = map.controller
@@ -76,4 +119,6 @@ class MapActivity : AppCompatActivity() {
                 requestPermissionRequestCode)
         }
     }
+    private fun setCordText(longitude: Double, latitude: Double, altitude: Double): Unit =
+        coordinateView.setText("long:$longitude, lat:$latitude, alt:$altitude")
 }
