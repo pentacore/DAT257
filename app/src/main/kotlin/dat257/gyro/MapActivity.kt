@@ -7,6 +7,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 
 import androidx.appcompat.app.AppCompatActivity
@@ -19,20 +20,21 @@ import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 
 class MapActivity : AppCompatActivity() {
     private val requestPermissionRequestCode = 1
 
     //Map
-    private lateinit var map : MapView
-    private lateinit var controller : IMapController
+    private lateinit var map: MapView
+    private lateinit var controller: IMapController
 
     //Coordinates
     private lateinit var coordinateView: TextView
     private lateinit var mLocationManager: LocationManager
     private var locationRefreshDistance: Float = 1.01f // exempel vet inte enhet
     private var locationRefreshTime: Long = 1
-
+    private lateinit var userMarker: Marker
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mLocationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -50,10 +52,10 @@ class MapActivity : AppCompatActivity() {
         // inflate and create the map
         setContentView(R.layout.activity_map)
 
-        coordinateView  = findViewById(R.id.CoordText)
 
         map = findViewById(R.id.map)
         map.setTileSource(TileSourceFactory.MAPNIK)
+
         val mLocationListener =
             LocationListener { setCordText(it.longitude, it.latitude, it.altitude) }
         if (ActivityCompat.checkSelfPermission(
@@ -84,6 +86,12 @@ class MapActivity : AppCompatActivity() {
         controller.setZoom(15.0)
         val gothenburg: IGeoPoint = GeoPoint(57.708870, 11.974560)
         controller.setCenter(gothenburg)
+
+        userMarker = Marker(map)
+        userMarker.position = GeoPoint(57.708870, 11.974560)
+        map.overlays.add(userMarker)
+
+
     }
 
     override fun onResume() {
@@ -104,7 +112,11 @@ class MapActivity : AppCompatActivity() {
         map.onPause()  //needed for compass, my location overlays, v6.0.0 and up
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         val permissionsToRequest = ArrayList<String>()
         var i = 0
@@ -116,9 +128,13 @@ class MapActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 permissionsToRequest.toTypedArray(),
-                requestPermissionRequestCode)
+                requestPermissionRequestCode
+            )
         }
     }
-    private fun setCordText(longitude: Double, latitude: Double, altitude: Double): Unit =
-        coordinateView.setText("long:$longitude, lat:$latitude, alt:$altitude")
+
+    private fun setCordText(longitude: Double, latitude: Double, altitude: Double): Int =
+        Log.i("Coordinates: ", "long:$longitude, lat:$latitude, alt:$altitude")
+            .also { userMarker.position = GeoPoint(latitude, longitude) }
+            .also { controller.setCenter(userMarker.position) }
 }

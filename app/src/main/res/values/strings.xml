@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">DreamTeamApp</string>
     <string name="button_start_map_activity">Show me the map!</string>
-    <string name="coords_should_be_here">coords should be here</string>
 </resources>
