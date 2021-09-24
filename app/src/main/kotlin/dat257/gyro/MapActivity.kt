@@ -7,6 +7,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import java.util.logging.Logger
 
 class MapActivity : AppCompatActivity() {
     private val requestPermissionRequestCode = 1
@@ -50,8 +52,7 @@ class MapActivity : AppCompatActivity() {
         // inflate and create the map
         setContentView(R.layout.activity_map)
 
-        coordinateView  = findViewById(R.id.CoordText)
-
+        val logger : Log
         map = findViewById(R.id.map)
         map.setTileSource(TileSourceFactory.MAPNIK)
         val mLocationListener =
@@ -119,6 +120,6 @@ class MapActivity : AppCompatActivity() {
                 requestPermissionRequestCode)
         }
     }
-    private fun setCordText(longitude: Double, latitude: Double, altitude: Double): Unit =
-        coordinateView.setText("long:$longitude, lat:$latitude, alt:$altitude")
+    private fun setCordText(longitude: Double, latitude: Double, altitude: Double): Int =
+        Log.i("Coordinates","long:$longitude, lat:$latitude, alt:$altitude")
 }
