@@ -53,7 +53,6 @@ class MapActivity : AppCompatActivity() {
         // inflate and create the map
         setContentView(R.layout.activity_map)
 
-
         map = findViewById(R.id.map)
         map.setTileSource(TileSourceFactory.MAPNIK)
 

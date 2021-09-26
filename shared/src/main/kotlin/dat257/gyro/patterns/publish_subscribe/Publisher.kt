@@ -1,6 +1,6 @@
 package dat257.gyro.patterns.publish_subscribe
 
 interface Publisher {
-    fun addChannel(Channel c)
-    fun update(Channel c)
+   public fun createChannel(c: Channel): Nothing = TODO()
+   fun update(c: Channel): Nothing = TODO()
 }
