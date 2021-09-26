@@ -1,15 +1,20 @@
 package dat257.gyro.patterns.publish_subscribe
 
+import java.util.*
+import kotlin.collections.HashMap
+
 /**
  * The layer of abstraction placed between publishers and
  * subscribers to keep them from knowing each others, for increased decoupling
+ * The string is for password
  */
-abstract class Broker(var channels: MutableList<Channel>) {
+abstract class Broker(var channels: HashMap<UUID,Channel>) {
 
     /**
      * shares a message with the subscribers of a channel
      */
-    fun share(channel: Channel, message: Message<*>) : Status = if (channels.contains(channel))
+    fun share(channel: Channel, message: Message<*>) : Status =
+        if (channels.contains(channel))
         channel.getSubscribers("temp")
 
     /**
@@ -25,11 +30,18 @@ abstract class Broker(var channels: MutableList<Channel>) {
         if (channel in channels){ channel.subscribe(subscriber,password)} else {
             Permission.Denied
         }
-            .also { log() }
 
-    fun wireChannel(name: String, access: String, publisher: Publisher) =
+    /**
+     * creates new channel with admin-rights
+     */
+    fun wireChannel(name: String, access: String, publisher: Publisher){
+        val adminAccess = UUID.randomUUID() // Only broker has adminrights
+        channels.put(adminAccess,Channel(name,access,adminAccess))
+    }
 
-    abstract fun log(function: String, status: Status, details: String)
+    // Todo add some logger or some way of creating a registry
+    // make async ?
+    // unsure about letting channels know what leaning towards not
 }
 
 enum class Status{
