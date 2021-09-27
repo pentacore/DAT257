@@ -4,6 +4,6 @@ import java.util.*
 
 
 interface Subscriber {
-    fun subscribe(channel: String)
-    fun onUpdate(channel: UUID, message: Message<*>)
+    fun subscribe(channel: String, subscriber: Subscriber)
+    fun onUpdate(channel: String, message: Message<*>)
 }

@@ -8,25 +8,25 @@ import kotlin.collections.HashMap
  * subscribers to keep them from knowing each others, for increased decoupling
  * The string is for password
  */
-abstract class Broker(var channels: HashMap<UUID,Channel>) {
+abstract class Broker(var channels: HashMap<String,Channel>) {
 
     /**
      * shares a message with the subscribers of a channel
      */
-    fun share(name: UUID, message: Message<*>) : Status =
+    fun share(name: String, message: Message<*>) : Status =
         if (channels.contains(channel))
         channel.getSubscribers("temp")
 
     /**
      * Shares a message across multiple channels
      */
-    fun shareMultiple(channels : List<Channel>, message: Message<*>) =
+    fun shareMultiple(channels : List<String>, message: Message<*>) =
         channels.forEach{share(it,message)}
 
     /**
      * join the list of subscribers to recieve events on channel updates
      */
-    fun subscribe(password: String, channel: Channel, subscriber: Subscriber): Permission =
+    fun subscribe(channel: String, subscriber: Subscriber): Permission =
         if (channel in channels){ channel.subscribe(subscriber,password)} else {
             Permission.Denied
         }
