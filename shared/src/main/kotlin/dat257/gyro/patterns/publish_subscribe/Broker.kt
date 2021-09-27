@@ -34,9 +34,9 @@ abstract class Broker(var channels: HashMap<UUID,Channel>) {
     /**
      * creates new channel with admin-rights
      */
-    fun wireChannel(name: String, access: String, publisher: Publisher){
+    fun wireChannel(name: String, publisher: Publisher){
         val adminAccess = UUID.randomUUID() // Only broker has adminrights
-        channels.put(adminAccess,Channel(name,access,adminAccess))
+        channels.put(adminAccess,Channel(name,adminAccess))
     }
 
     // Todo add some logger or some way of creating a registry
