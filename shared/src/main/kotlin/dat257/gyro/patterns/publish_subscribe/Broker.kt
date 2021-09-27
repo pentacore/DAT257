@@ -8,14 +8,15 @@ import kotlin.collections.HashMap
  * subscribers to keep them from knowing each others, for increased decoupling
  * The string is for password
  */
-abstract class Broker(var channels: HashMap<String,Channel>) {
+class Broker(var channels: MutableMap<String,Channel>) {
+
+    val authorization : MutableMap<UUID,String> = mutableMapOf<UUID,String>()
 
     /**
      * shares a message with the subscribers of a channel
      */
-    fun share(name: String, message: Message<*>) : Status =
-        if (channels.contains(channel))
-        channel.getSubscribers("temp")
+    fun share(name: String, message: Message<*>) = if (channels.containsKey(name)) channels[name].getSubscribers()
+
 
     /**
      * Shares a message across multiple channels
@@ -34,20 +35,15 @@ abstract class Broker(var channels: HashMap<String,Channel>) {
     /**
      * creates new channel with admin-rights
      */
-    fun wireChannel(name: String, publisher: Publisher){
-        val adminAccess = UUID.randomUUID() // Only broker has adminrights
-        channels.put(adminAccess,Channel(name,adminAccess))
+    fun wireChannel(publisher: Publisher,name: String) {
+        val adminAccess = UUID.randomUUID()
+        val newChannel = Channel(name,adminAccess,publisher)
+        authorization[adminAccess] = name
+        channels[name] =
     }
 
     // Todo add some logger or some way of creating a registry
     // make async ?
     // unsure about letting channels know what leaning towards not
 }
-
-enum class Status{
-    Ongoing,
-    Success,
-    Failure,
-}
-
 
