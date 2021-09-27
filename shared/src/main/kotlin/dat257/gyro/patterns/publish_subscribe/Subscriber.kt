@@ -1,7 +1,9 @@
 package dat257.gyro.patterns.publish_subscribe
 
+import java.util.*
+
 
 interface Subscriber {
-    fun subscribe(c: Channel)
-    fun onUpdate(channel: Channel, message: Message<*>)
+    fun subscribe(channel: String)
+    fun onUpdate(channel: UUID, message: Message<*>)
 }

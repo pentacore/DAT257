@@ -10,10 +10,11 @@ interface Publisher {
    /**
     * Creates new line of communication, returns UUID asscociated with identifying the channel
     */
-   public fun createChannel(publisher: Publisher): UUID
+   public fun createChannel(publisher: Publisher, name: String): Nothing
 
    /**
     * publish a message
     */
-   fun publish(name: UUID, msg: Message<*>): Nothing
+   fun publish(name: String, msg: Message<*>): Nothing
+
 }
