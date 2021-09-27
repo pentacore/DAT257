@@ -13,7 +13,7 @@ abstract class Broker(var channels: HashMap<UUID,Channel>) {
     /**
      * shares a message with the subscribers of a channel
      */
-    fun share(channel: Channel, message: Message<*>) : Status =
+    fun share(name: UUID, message: Message<*>) : Status =
         if (channels.contains(channel))
         channel.getSubscribers("temp")
 
