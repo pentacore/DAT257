@@ -8,5 +8,4 @@ abstract class TransferType<T> {
     fun toJson(): String {
         return Json.encodeToString(this)
     }
-    abstract fun fromJson(data: String):T
 }

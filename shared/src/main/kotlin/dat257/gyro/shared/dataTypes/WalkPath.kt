@@ -8,19 +8,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class WalkPath(
+    var id: Int? = null,
     var name: String? = null,
     var description: String? = null,
     var public: Boolean? = null,
     var classification: Classification? = null,
     var nodes: Array<Node>? = null,
     var ratings: Array<Rating>? = null,
+    var owner: Profile? = null,
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null
 ) : TransferType<WalkPath>() {
-
-    override fun fromJson(data: String): WalkPath {
-        TODO("Not yet implemented")
-    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -58,9 +56,6 @@ data class WalkPath(
         var createdAt: LocalDateTime? = null,
         var updatedAt: LocalDateTime? = null
     ) : TransferType<Classification>() {
-        override fun fromJson(data: String): Classification {
-            TODO("Not yet implemented")
-        }
     }
 
     @Serializable
@@ -70,9 +65,6 @@ data class WalkPath(
         var createdAt: LocalDateTime? = null,
         var updatedAt: LocalDateTime? = null
     ) : TransferType<Node>() {
-        override fun fromJson(data: String): Node {
-            TODO("Not yet implemented")
-        }
     }
 
     @Serializable
@@ -83,8 +75,5 @@ data class WalkPath(
         var createdAt: LocalDateTime? = null,
         var updatedAt: LocalDateTime? = null
     ) : TransferType<Rating>() {
-        override fun fromJson(data: String): Rating {
-            TODO("Not yet implemented")
-        }
     }
 }
