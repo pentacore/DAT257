@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val helloWorldFragment = Fragment(R.layout.fragment_hello_world)
-        val helloMapFragment = Fragment(R.layout.fragment_hello_map)
+        val helloMapFragment = MapFragment()
         val helloSettingsFragment = Fragment(R.layout.fragment_hello_settings)
 
         setCurrentFragment(helloWorldFragment)

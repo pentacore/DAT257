@@ -3,17 +3,16 @@ package dat257.gyro
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.material.internal.ContextUtils.getActivity
-import org.osmdroid.api.IGeoPoint
+import androidx.fragment.app.Fragment
 import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
@@ -22,7 +21,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
-class MapActivity : AppCompatActivity() {
+class MapFragment : Fragment() {
     private val requestPermissionRequestCode = 1
 
     //Map
@@ -30,18 +29,20 @@ class MapActivity : AppCompatActivity() {
     private lateinit var controller: IMapController
 
     //Coordinates
-    private lateinit var coordinateView: TextView
     private lateinit var mLocationManager: LocationManager
     private var locationRefreshDistance: Float = 1.01f // exempel vet inte enhet
     private var locationRefreshTime: Long = 1
     private lateinit var userMarker: Marker
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mLocationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        val activityContext = activity
+        mLocationManager = activityContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // load/initialize the osmdroid configuration
         // This won't work unless you have imported this: org.osmdroid.config.Configuration.*
-        getInstance().load(this, this.getPreferences(0))
+        getInstance().load(activityContext, activityContext.getSharedPreferences(null, 0))
         // setting this before the layout is inflated is a good idea
         // it 'should' ensure that the map has a writable location for the map cache, even without permissions
         // if no tiles are displayed, you can try overriding the cache path using Configuration.getInstance().setCachePath
@@ -49,22 +50,19 @@ class MapActivity : AppCompatActivity() {
         // note, the load method also sets the HTTP User Agent to your application's package name; abusing the osm
         // tile servers will get you banned based on this string.
 
-        // inflate and create the map
-        setContentView(R.layout.activity_map)
-
-
-        map = findViewById(R.id.map)
-        map.setTileSource(TileSourceFactory.MAPNIK)
-
         val mLocationListener =
             LocationListener { setCordText(it.longitude, it.latitude, it.altitude) }
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+        if (activityContext.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED && activityContext.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
         ) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -81,17 +79,22 @@ class MapActivity : AppCompatActivity() {
             locationRefreshDistance, mLocationListener
         )
 
-        // set zoom and lat/lng for initial view
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_map, container, false)
+        map = view.findViewById(R.id.map)
+        map.setTileSource(TileSourceFactory.MAPNIK)
         controller = map.controller
         controller.setZoom(15.0)
-        val gothenburg: IGeoPoint = GeoPoint(57.708870, 11.974560)
-        controller.setCenter(gothenburg)
-
         userMarker = Marker(map)
-        userMarker.position = GeoPoint(57.708870, 11.974560)
         map.overlays.add(userMarker)
-
-
+        return view
     }
 
     override fun onResume() {
@@ -125,11 +128,13 @@ class MapActivity : AppCompatActivity() {
             i++
         }
         if (permissionsToRequest.size > 0) {
-            ActivityCompat.requestPermissions(
-                this,
-                permissionsToRequest.toTypedArray(),
-                requestPermissionRequestCode
-            )
+            activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    permissionsToRequest.toTypedArray(),
+                    requestPermissionRequestCode
+                )
+            }
         }
     }
 
