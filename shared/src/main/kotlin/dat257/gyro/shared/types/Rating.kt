@@ -1,6 +1,6 @@
 package dat257.gyro.shared.types
 
-enum class Rating(val value:Int) {
+enum class Rating(val value: Int) {
     ZERO(0),
     ONE(1),
     TWO(2),

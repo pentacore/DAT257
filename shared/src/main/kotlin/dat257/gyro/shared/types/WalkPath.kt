@@ -1,7 +1,7 @@
 package dat257.gyro.shared.types
 
-import kotlinx.serialization.Serializable
 import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class WalkPath(
@@ -9,10 +9,10 @@ data class WalkPath(
     var description: String? = null,
     var public: Boolean? = null,
     var classification: Classification? = null,
-    var nodes:Array<Node>? = null,
-    var ratings:Array<Rating>? = null,
-    var createdAt:LocalDateTime? = null,
-    var updatedAt:LocalDateTime? = null
+    var nodes: Array<Node>? = null,
+    var ratings: Array<Rating>? = null,
+    var createdAt: LocalDateTime? = null,
+    var updatedAt: LocalDateTime? = null
 ) : TransferType<WalkPath> {
     override fun toJson(data: WalkPath): String {
         TODO("Not yet implemented")
@@ -55,9 +55,9 @@ data class WalkPath(
         var handicapFriendly: Boolean? = null,
         var strollerFriendly: Boolean? = null,
         var lighted: Boolean? = null,
-        var createdAt:LocalDateTime? = null,
-        var updatedAt:LocalDateTime? = null
-    ):TransferType<Classification> {
+        var createdAt: LocalDateTime? = null,
+        var updatedAt: LocalDateTime? = null
+    ) : TransferType<Classification> {
         override fun toJson(data: Classification): String {
             TODO("Not yet implemented")
         }
@@ -68,10 +68,12 @@ data class WalkPath(
     }
 
     @Serializable
-    data class Node(val longitude: Double? = null,
-                    var latitude:Double? = null,
-                    var createdAt:LocalDateTime? = null,
-                    var updatedAt:LocalDateTime? = null) : TransferType<Node> {
+    data class Node(
+        val longitude: Double? = null,
+        var latitude: Double? = null,
+        var createdAt: LocalDateTime? = null,
+        var updatedAt: LocalDateTime? = null
+    ) : TransferType<Node> {
         override fun toJson(data: Node): String {
             return ""
         }
@@ -82,11 +84,13 @@ data class WalkPath(
     }
 
     @Serializable
-    data class Rating(var profileName:String? = null,
-                      var rating: dat257.gyro.shared.types.Rating? = null,
-                      var comment:String? = null,
-                      var createdAt:LocalDateTime? = null,
-                      var updatedAt:LocalDateTime? = null) : TransferType<Rating> {
+    data class Rating(
+        var profileName: String? = null,
+        var rating: dat257.gyro.shared.types.Rating? = null,
+        var comment: String? = null,
+        var createdAt: LocalDateTime? = null,
+        var updatedAt: LocalDateTime? = null
+    ) : TransferType<Rating> {
         override fun toJson(data: Rating): String {
             TODO("Not yet implemented")
         }
