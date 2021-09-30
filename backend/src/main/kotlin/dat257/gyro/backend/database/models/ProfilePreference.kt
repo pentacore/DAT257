@@ -1,7 +1,7 @@
 package dat257.gyro.backend.database.models
 
 import dat257.gyro.backend.database.tables.ProfilePreferences
-import dat257.gyro.backend.database.types.ShowOnMap
+import dat257.gyro.shared.types.ShowOnMap
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID

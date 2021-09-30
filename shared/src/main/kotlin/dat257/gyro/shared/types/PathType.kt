@@ -1,4 +1,4 @@
-package dat257.gyro.backend.database.types
+package dat257.gyro.shared.types
 
 enum class PathType(val type: String) {
     GRAVEL("gravel"),

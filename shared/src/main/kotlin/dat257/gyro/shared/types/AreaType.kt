@@ -1,4 +1,4 @@
-package dat257.gyro.backend.database.types
+package dat257.gyro.shared.types
 
 enum class AreaType(val type: String) {
     PARK("park"),

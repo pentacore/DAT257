@@ -1,8 +1,8 @@
 package dat257.gyro.backend.database.models
 
 import dat257.gyro.backend.database.tables.WalkPathClassifications
-import dat257.gyro.backend.database.types.AreaType
-import dat257.gyro.backend.database.types.PathType
+import dat257.gyro.shared.types.AreaType
+import dat257.gyro.shared.types.PathType
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
