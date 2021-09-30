@@ -20,6 +20,14 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
+
+    buildFeatures(){
+        viewBinding=true
+
+
+
+
+    }
     compileOptions {
         sourceCompatibility(1.8)
         targetCompatibility(1.8)
@@ -36,6 +44,7 @@ dependencies {
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.0")
     implementation("org.osmdroid:osmdroid-android:6.1.11")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
