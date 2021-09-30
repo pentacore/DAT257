@@ -13,5 +13,5 @@ data class Profile(
     var banned: Boolean? = null,
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null
-) : TransferType<Profile>() {
+) : TransferType() {
 }

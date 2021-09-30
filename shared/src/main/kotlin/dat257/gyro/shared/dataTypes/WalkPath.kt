@@ -18,7 +18,7 @@ data class WalkPath(
     var owner: Profile? = null,
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null
-) : TransferType<WalkPath>() {
+) : TransferType() {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -55,7 +55,7 @@ data class WalkPath(
         var lighted: Boolean? = null,
         var createdAt: LocalDateTime? = null,
         var updatedAt: LocalDateTime? = null
-    ) : TransferType<Classification>() {
+    ) : TransferType() {
     }
 
     @Serializable
@@ -64,7 +64,7 @@ data class WalkPath(
         var latitude: Double? = null,
         var createdAt: LocalDateTime? = null,
         var updatedAt: LocalDateTime? = null
-    ) : TransferType<Node>() {
+    ) : TransferType() {
     }
 
     @Serializable
@@ -74,6 +74,6 @@ data class WalkPath(
         var comment: String? = null,
         var createdAt: LocalDateTime? = null,
         var updatedAt: LocalDateTime? = null
-    ) : TransferType<Rating>() {
+    ) : TransferType() {
     }
 }

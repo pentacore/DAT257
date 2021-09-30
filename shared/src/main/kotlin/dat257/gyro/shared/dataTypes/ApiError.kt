@@ -7,5 +7,5 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 @Serializable
-data class ApiError(val errorCode: ApiErrorCode, val message:String) : TransferType<ApiError>() {
+data class ApiError(val errorCode: ApiErrorCode, val message:String) : TransferType() {
 }

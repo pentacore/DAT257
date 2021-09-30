@@ -13,7 +13,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.0")
     implementation("org.http4k:http4k-core:4.13.1.0")
     implementation("org.http4k:http4k-client-apache:4.13.1.0")
-    testImplementation(kotlin("test"))
+    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.31")
 }
 
 tasks.test {

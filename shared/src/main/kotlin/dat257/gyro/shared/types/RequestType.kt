@@ -12,7 +12,7 @@ import org.http4k.core.Response
 import org.http4k.core.Status
 import java.util.*
 
-abstract class RequestType<DataType : TransferType<DataType>>(private val profileUUID: UUID, private val apiToken:String) {
+abstract class RequestType<DataType : TransferType>(private val profileUUID: UUID, private val apiToken:String) {
     protected abstract val endpointUrl: String
     protected abstract val data: DataType
     protected val client: HttpHandler = JavaHttpClient()
