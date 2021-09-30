@@ -1,5 +1,8 @@
-package dat257.gyro.shared.types
+package dat257.gyro.shared.dataTypes
 
+import dat257.gyro.shared.enums.AreaType
+import dat257.gyro.shared.enums.PathType
+import dat257.gyro.shared.types.TransferType
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
@@ -13,10 +16,7 @@ data class WalkPath(
     var ratings: Array<Rating>? = null,
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null
-) : TransferType<WalkPath> {
-    override fun toJson(data: WalkPath): String {
-        TODO("Not yet implemented")
-    }
+) : TransferType<WalkPath>() {
 
     override fun fromJson(data: String): WalkPath {
         TODO("Not yet implemented")
@@ -57,11 +57,7 @@ data class WalkPath(
         var lighted: Boolean? = null,
         var createdAt: LocalDateTime? = null,
         var updatedAt: LocalDateTime? = null
-    ) : TransferType<Classification> {
-        override fun toJson(data: Classification): String {
-            TODO("Not yet implemented")
-        }
-
+    ) : TransferType<Classification>() {
         override fun fromJson(data: String): Classification {
             TODO("Not yet implemented")
         }
@@ -73,11 +69,7 @@ data class WalkPath(
         var latitude: Double? = null,
         var createdAt: LocalDateTime? = null,
         var updatedAt: LocalDateTime? = null
-    ) : TransferType<Node> {
-        override fun toJson(data: Node): String {
-            return ""
-        }
-
+    ) : TransferType<Node>() {
         override fun fromJson(data: String): Node {
             TODO("Not yet implemented")
         }
@@ -86,15 +78,11 @@ data class WalkPath(
     @Serializable
     data class Rating(
         var profileName: String? = null,
-        var rating: dat257.gyro.shared.types.Rating? = null,
+        var rating: dat257.gyro.shared.enums.Rating? = null,
         var comment: String? = null,
         var createdAt: LocalDateTime? = null,
         var updatedAt: LocalDateTime? = null
-    ) : TransferType<Rating> {
-        override fun toJson(data: Rating): String {
-            TODO("Not yet implemented")
-        }
-
+    ) : TransferType<Rating>() {
         override fun fromJson(data: String): Rating {
             TODO("Not yet implemented")
         }

@@ -1,6 +1,12 @@
 package dat257.gyro.shared.types
 
-interface TransferType<T> {
-    fun toJson(data: T): String
-    fun fromJson(data: String): T
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
+abstract class TransferType<T> {
+    fun toJson(): String {
+        return Json.encodeToString(this)
+    }
+    abstract fun fromJson(data: String):T
 }
