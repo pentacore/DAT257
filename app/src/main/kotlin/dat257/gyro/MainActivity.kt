@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private fun setCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fcv_main, fragment)
+            addToBackStack(null)
             commit()
         }
     }
