@@ -20,6 +20,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polyline
 
 class MapFragment : Fragment() {
     private val requestPermissionRequestCode = 1
@@ -34,11 +35,13 @@ class MapFragment : Fragment() {
     private var locationRefreshTime: Long = 1
     private lateinit var userMarker: Marker
 
+    private var testRoute = Route()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val activityContext = activity
-        mLocationManager = activityContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        mLocationManager =
+            activityContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // load/initialize the osmdroid configuration
         // This won't work unless you have imported this: org.osmdroid.config.Configuration.*
@@ -142,4 +145,38 @@ class MapFragment : Fragment() {
         Log.i("Coordinates: ", "long:$longitude, lat:$latitude, alt:$altitude")
             .also { userMarker.position = GeoPoint(latitude, longitude) }
             .also { controller.setCenter(userMarker.position) }
+            .also { testRoute.addCoordinate(GeoPoint(latitude, longitude)) }
+            .also { drawRoute(testRoute) }
+
+    /**
+     *@author Erik
+     **/
+    private fun drawRoute(r: Route): Polyline {
+        val geoPoints = r.getCoordinates()
+        val line = Polyline()
+        line.setPoints(geoPoints)
+        /*
+        line.setOnClickListener(new Polyline.OnClickListener() {
+            Toast.makeText(mapView.context, "polyline with " + line.actualPoints.size + " pts was tapped", Toast.LENGTH_LONG).show()
+            return false
+        }
+        */
+        map.overlays.add(line)
+        return line
+    }
+}
+
+/**
+ *@author Erik
+ **/
+class Route {
+    private var coordinates: ArrayList<GeoPoint> = ArrayList()
+
+    fun addCoordinate(gp: GeoPoint) {
+        coordinates.add(gp)
+    }
+
+    fun getCoordinates(): ArrayList<GeoPoint> {
+        return coordinates
+    }
 }
