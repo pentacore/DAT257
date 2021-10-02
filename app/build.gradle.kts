@@ -25,8 +25,6 @@ android {
         viewBinding=true
 
 
-
-
     }
     compileOptions {
         sourceCompatibility(1.8)

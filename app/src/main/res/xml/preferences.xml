@@ -5,14 +5,15 @@
     <SwitchPreferenceCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:clickable="true"
+        app:title="Unit (Km / Mi)"
+        android:clickable="true"
         app:key="Unit"
-        app:title="Unit (Km / Mi)" />
+        />
 
     <SwitchPreferenceCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:clickable="true"
+        android:clickable="true"
         app:key="Pace"
         app:title="Time/distance or distance/time" />
 
