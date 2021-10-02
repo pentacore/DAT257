@@ -3,13 +3,16 @@ package dat257.gyro
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.icu.text.SimpleDateFormat
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -21,6 +24,9 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class MapFragment : Fragment() {
     private val requestPermissionRequestCode = 1
@@ -29,16 +35,27 @@ class MapFragment : Fragment() {
     private lateinit var map: MapView
     private lateinit var controller: IMapController
 
+    //Conceptual time
+    private lateinit var simpleDateFormat: SimpleDateFormat
+
+
     //Coordinates
     private lateinit var mLocationManager: LocationManager
     private var locationRefreshDistance: Float = 1.01f // exempel vet inte enhet
     private var locationRefreshTime: Long = 1
     private lateinit var userMarker: Marker
 
-    private var testRoute = Route()
+    private lateinit var testRoute: Route
+
+    /**
+     * @author Felix
+     * @author Jonathan
+     */
+    // Detta borde vi oroa oss över senare
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        simpleDateFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         val activityContext = activity
         mLocationManager =
             activityContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -145,14 +162,26 @@ class MapFragment : Fragment() {
         Log.i("Coordinates: ", "long:$longitude, lat:$latitude, alt:$altitude")
             .also { userMarker.position = GeoPoint(latitude, longitude) }
             .also { controller.setCenter(userMarker.position) }
-            .also { testRoute.addCoordinate(GeoPoint(latitude, longitude)) }
+            .also {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    testRoute.coordinates.add(
+                        Pair(
+                            simpleDateFormat.format(Date()),
+                            GeoPoint(latitude, longitude)
+                        )
+                    )
+                }
+            }
             .also { drawRoute(testRoute) }
 
     /**
-     *@author Erik
+     * @author Erik
+     * @author Jonathan
+     * @author Felix
      **/
     private fun drawRoute(r: Route): Polyline {
-        val geoPoints = r.getCoordinates()
+        val geoPoints = arrayListOf<GeoPoint>()
+        r.coordinates.forEach { geoPoints.add(it.second) }//.forEach{ r.coordinates[it]?.let { it1 -> geoPoints.add(it1) } }
         val line = Polyline()
         line.setPoints(geoPoints)
         /*
@@ -162,21 +191,17 @@ class MapFragment : Fragment() {
         }
         */
         map.overlays.add(line)
+        geoPoints.clear()
         return line
     }
 }
 
 /**
- *@author Erik
+ * @author Erik
+ * @author Jonathan
+ * @author Felix
  **/
-class Route {
-    private var coordinates: ArrayList<GeoPoint> = ArrayList()
+data class Route(var coordinates: MutableList<Pair<String, GeoPoint>>) {
 
-    fun addCoordinate(gp: GeoPoint) {
-        coordinates.add(gp)
-    }
 
-    fun getCoordinates(): ArrayList<GeoPoint> {
-        return coordinates
-    }
 }
