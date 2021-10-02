@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">DreamTeamApp</string>
+    <string name="Measurements">Item</string>
+    <string name="button_start_map_activity">Show me the map!</string>
     <string name="hello_world">Hello world!</string>
     <string name="hello_map">Hello map!</string>
     <string name="hello_settings">Hello settings!</string>
