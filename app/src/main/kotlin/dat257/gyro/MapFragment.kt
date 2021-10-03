@@ -59,7 +59,8 @@ class MapFragment : Fragment() {
         val activityContext = activity
         mLocationManager =
             activityContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
+        val routeInit = mutableListOf<Pair<String,GeoPoint>>()
+        testRoute = Route(routeInit)
         // load/initialize the osmdroid configuration
         // This won't work unless you have imported this: org.osmdroid.config.Configuration.*
         getInstance().load(activityContext, activityContext.getSharedPreferences(null, 0))
@@ -114,6 +115,7 @@ class MapFragment : Fragment() {
         controller.setZoom(15.0)
         userMarker = Marker(map)
         map.overlays.add(userMarker)
+
         return view
     }
 
@@ -195,6 +197,11 @@ class MapFragment : Fragment() {
         return line
     }
 }
+// TODO: 2021-10-03
+// Skapa en generisk drawRoute funktion som tar in en Klass med Settings
+// (med underliggande klass(er) LineSettings)
+// Utöver detta separera funktionen recordRoute (den som användaren spelar in)
+// och drawRoute (den som användaren hämtat "för att följa" (tillkallas separat)
 
 /**
  * @author Erik
