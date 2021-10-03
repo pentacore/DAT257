@@ -16,6 +16,10 @@ import androidx.annotation.RequiresApi
 
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import dat257.gyro.publish_subscribe.Broker
+import dat257.gyro.publish_subscribe.ChannelNames
+import dat257.gyro.publish_subscribe.Message
+import dat257.gyro.publish_subscribe.Subscriber
 import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
@@ -27,7 +31,7 @@ import org.osmdroid.views.overlay.Polyline
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MapFragment : Fragment() {
+class MapFragment(val broker: Broker) : Fragment(), Subscriber {
     private val requestPermissionRequestCode = 1
 
     //Map
@@ -194,6 +198,14 @@ class MapFragment : Fragment() {
         map.overlays.add(line)
         geoPoints.clear()
         return line
+    }
+
+    override fun subscribe(channel: ChannelNames, subscriber: Subscriber) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onUpdate(channel: ChannelNames, message: Message<*>) {
+        TODO("Not yet implemented")
     }
 }
 // TODO: 2021-10-03

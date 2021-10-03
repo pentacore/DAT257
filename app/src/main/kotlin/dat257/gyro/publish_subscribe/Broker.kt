@@ -1,4 +1,5 @@
 package dat257.gyro.publish_subscribe
+import android.util.Log
 import kotlin.NoSuchElementException
 
 
@@ -8,8 +9,8 @@ import kotlin.NoSuchElementException
  * The string is for password
  */
 class Broker(
-    private val owner: BrokerOwner,
     private val channels: MutableList<Channel> = mutableListOf<Channel>(),
+    val publishers: MutableList<Publisher> = mutableListOf<Publisher>()
 ) {
 
     /* För när vi har tid, asynkrona coola grejjor
@@ -33,10 +34,6 @@ class Broker(
             }
             ?: throw NoSuchElementException("No such channel")
 
-
-    /*?.subscribers?.forEach { it.onUpdate(name, message) }
-    ?: throw NoSuchElementException("No such channel") // borde specifieras senare
-*/
     /**
      * Shares a message across multiple channels
      */
@@ -59,7 +56,6 @@ class Broker(
             ?: channels.add(
                 Channel(name, publisher, this)
             )
-
 }
 
 

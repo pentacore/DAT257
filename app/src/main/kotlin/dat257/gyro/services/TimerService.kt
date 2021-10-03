@@ -2,10 +2,11 @@ package dat257.gyro.services
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import dat257.gyro.publish_subscribe.*
 import java.util.*
 
 
-class TimerService : Service()
+class TimerService(val broker: Broker) : Service(), Publisher
 {
     override fun onBind(p0: Intent?): IBinder? = null
 
@@ -39,6 +40,12 @@ class TimerService : Service()
     {
         const val TIMER_UPDATED = "timerUpdated"
         const val TIME_EXTRA = "timeExtra"
+    }
+
+    override fun createChannel(publisher: Publisher, name: ChannelNames): Boolean = broker.wireChannel(this,name)
+
+    override fun publish(name: ChannelNames, msg: Message<*>) {
+        TODO("Not yet implemented")
     }
 
 }
