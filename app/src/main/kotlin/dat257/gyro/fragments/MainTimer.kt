@@ -1,22 +1,18 @@
-package dat257.gyro
+package dat257.gyro.fragments
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
-import dat257.gyro.databinding.FragmentFirstBinding
+import dat257.gyro.R
+import dat257.gyro.services.TimerService
 import kotlin.math.roundToInt
 
 class MainTimer : Fragment()

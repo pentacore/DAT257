@@ -26,7 +26,6 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class MapFragment : Fragment() {
     private val requestPermissionRequestCode = 1

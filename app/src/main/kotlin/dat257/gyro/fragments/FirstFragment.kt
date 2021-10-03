@@ -1,10 +1,12 @@
-package dat257.gyro
+package dat257.gyro.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import dat257.gyro.R
+
 class FirstFragment : Fragment() {
 
     override fun onCreateView(

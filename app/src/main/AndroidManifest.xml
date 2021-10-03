@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DreamTeamApp">
 
-        <service android:name=".TimerService"/>
+        <service android:name=".services.TimerService"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
