@@ -8,7 +8,7 @@ interface Publisher {
    /**
     * Creates new line of communication, returns UUID asscociated with identifying the channel
     */
-   fun createChannel(publisher: Publisher, name: String): Nothing
+   fun createChannel(publisher: Publisher, name: ChannelNames): Nothing
 
    /**
     * publish a message

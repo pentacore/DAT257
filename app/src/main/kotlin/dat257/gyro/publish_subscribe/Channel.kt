@@ -7,32 +7,16 @@ import java.util.*
  * the topic of information to provide to promote decoupling
  */
 
-class Channel(
-    private val name: String,
-    private val adminAccessPass: UUID,
-    private val publisher: Publisher
+data class Channel(
+    val name: ChannelNames,
+    val publisher: Publisher,
+    private val broker: Broker,
+    val subscribers: MutableList<Subscriber> = mutableListOf()
 ) {
-    // modifiera get för password den ska inte existera
-    private val subscribers: MutableList<Subscriber> = mutableListOf() //borde
 
-    fun getSubscribers(password: UUID): MutableList<Subscriber> =
-        if (password == adminAccessPass) subscribers
-        else throw IllegalAccessException("Attempted to access subscribers with wrong password")
-
-    fun authSubscriber(): Permission =
-        Permission.Accepted
-
-    fun subscribe(s: Subscriber, adminPass: UUID): Permission =
-        if (adminPass == adminAccessPass) {
-            subscribers.add(s)
-            Permission.Accepted
-        } else {
-            Permission.Denied
-        }
 }
 
-    // det här borde definitvt vara exceptions
-    enum class Permission {
-        Denied,
-        Accepted
-    }
+enum class ChannelNames {
+    Location,
+    Timer
+}

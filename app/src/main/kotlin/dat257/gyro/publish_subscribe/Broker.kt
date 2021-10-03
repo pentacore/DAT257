@@ -1,8 +1,5 @@
 package dat257.gyro.publish_subscribe
-
-import arrow.core.*
-import java.util.*
-import kotlin.collections.HashMap
+import kotlin.NoSuchElementException
 
 
 /**
@@ -12,73 +9,59 @@ import kotlin.collections.HashMap
  */
 class Broker(
     private val owner: BrokerOwner,
-    private val init: Boolean,
-    private val channels: Map<String, Channel>,
-    private val authorization: Map<UUID, String>,
-    ) {
+    private val channels: MutableList<Channel> = mutableListOf<Channel>(),
+) {
 
-    init {
-        if (!init) owner.obtainBroker(this)
-    }
-
-
-    fun callPurely(mutation: () -> Broker): Broker =
-        mutation.invoke().also { owner.obtainBroker(this) }
-
+    /* För när vi har tid, asynkrona coola grejjor
+    private fun shareFlow(name: ChannelNames, message: Message<*>) = flow<Pair<Message<*>, Subscriber>> {
+        Log.i("ShareFlow", "sharing")
+        channels[name]?.subscribers?.forEach { emit(Pair(message, it)) }
+            ?: throw NoSuchElementException("No such channel") // borde specifieras senare
+    }*/
 
     /**
      * shares a message with the subscribers of a channel
      */
-    fun share(name: String, message: Message<*>): Option<Exception> =
-        if (!channels.containsKey(name)) Some(IllegalArgumentException("no"))
-        else None
+    fun share(name: ChannelNames, message: Message<*>) =
+        channels.firstOrNull { it.name == name }
+            ?.let { channel ->
+                if (channel.subscribers.size == 0)
+                    throw NoSuchElementException("Channel has no subscribers")
+                else
+                    channel.subscribers
+                        .forEach { it.onUpdate(name, message) }
+            }
+            ?: throw NoSuchElementException("No such channel")
 
 
+    /*?.subscribers?.forEach { it.onUpdate(name, message) }
+    ?: throw NoSuchElementException("No such channel") // borde specifieras senare
+*/
     /**
      * Shares a message across multiple channels
      */
-    fun shareMultiple(channels: List<String>, message: Message<*>) =
+    fun shareMultiple(channels: List<ChannelNames>, message: Message<*>) =
         channels.forEach { share(it, message) }
 
     /**
      * join the list of subscribers to recieve events on channel updates
      */
-    fun subscribe(channel: String, subscriber: Subscriber): Either<Exception, BrokerStatus> =
-        Either.conditionally(
-            channels.containsKey(channel),
-            fun() = IllegalArgumentException("no"),
-            fun() = BrokerStatus.Initiated()
-        )
-
-
-    // error not found
-    // success
-    /*
-     val maybeChannel : Option<Channel> = Option.fromNullable(channels[channel])
-     maybeChannel.getOrElse { Log.d("Channel", "No such channel found") }
-*/
+    fun subscribe(channel: ChannelNames, subscriber: Subscriber) =
+        channels.firstOrNull { it.name == channel }?.subscribers?.add(subscriber)
+            ?: throw NoSuchElementException("No such channel")
 
     /**
-     * creates new channel with admin-rights
+     * creates new channel
      */
-    fun wireChannel(publisher: Publisher, name: String) {
-        val adminAccess = UUID.randomUUID()
-        val newChannel = Channel(name, adminAccess, publisher)
-        val uuids = authorization.keys
-        val channelSet = authorization.values
-        val names = channels.keys
+    fun wireChannel(publisher: Publisher, name: ChannelNames) =
+        channels.firstOrNull { it.name == name }
+            ?.let { throw Exception("Channel already exist") }
+            ?: channels.add(
+                Channel(name, publisher, this)
+            )
 
-    }
-
-    // Todo add some logger or some way of creating a registry
-    // make async ?
 }
 
 
-sealed class BrokerStatus(status: String) {
-    class Queued : BrokerStatus("Queued")
-    class Initiated : BrokerStatus("Initiated")
-    class Pending : BrokerStatus("Pending")
-}
 
 
