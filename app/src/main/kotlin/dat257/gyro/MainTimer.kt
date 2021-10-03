@@ -16,7 +16,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
-import dat257.gyro.databinding.ActivityTimerBinding
 import dat257.gyro.databinding.FragmentFirstBinding
 import kotlin.math.roundToInt
 
