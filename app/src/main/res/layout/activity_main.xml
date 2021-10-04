@@ -28,7 +28,7 @@
         app:layout_constraintVertical_bias="0.373" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment"
+        android:id="@+id/Timerfragment"
         android:name="dat257.gyro.MainTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

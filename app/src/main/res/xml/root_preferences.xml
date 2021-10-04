@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="Geo settings"
+        app:icon="@drawable/ic_baseline_location_on_24">
+
+
+        <ListPreference
+            app:key="units"
+            app:title="Default length units"
+            app:entries="@array/length_units"
+            app:entryValues="@array/reply_values"
+            app:defaultValue="Miles"
+            app:useSimpleSummaryProvider="true"/>
+
+        <SwitchPreferenceCompat
+            app:key="bool"
+            app:title="SlidebarSetting"
+            app:summaryOn="TRUE"
+            app:summaryOff="FALSE"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="Social settings"
+        app:icon="@drawable/ic_baseline_message_24">
+
+        <EditTextPreference
+            app:key="name"
+            app:title="Your name"
+            app:useSimpleSummaryProvider="true"/>
+
+        <EditTextPreference
+            app:key="othersetting1"
+            app:title="other setting 1"
+            app:useSimpleSummaryProvider="true"/>
+
+        <SeekBarPreference
+            app:key="slider"
+            app:title="adjustable slider"
+            app:showSeekBarValue="true"
+            app:defaultValue="50"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
