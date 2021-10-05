@@ -12,21 +12,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.annotation.RequiresApi
 
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import org.osmdroid.api.IGeoPoint
 import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class MapFragment : Fragment() {
     private val requestPermissionRequestCode = 1
@@ -35,15 +36,21 @@ class MapFragment : Fragment() {
     private lateinit var map: MapView
     private lateinit var controller: IMapController
 
+    //Lock button
+    private lateinit var lockButton: Button
+    private var isLocked = false
+    private var bearing: Float = 0F
+
     //Conceptual time
     private lateinit var simpleDateFormat: SimpleDateFormat
-
 
     //Coordinates
     private lateinit var mLocationManager: LocationManager
     private var locationRefreshDistance: Float = 1.01f // exempel vet inte enhet
     private var locationRefreshTime: Long = 1
-    private lateinit var userMarker: Marker
+    private lateinit var overlay: MyLocationNewOverlay
+    private lateinit var location: IGeoPoint
+    //private lateinit var userMarker: Marker
 
     private lateinit var testRoute: Route
 
@@ -72,7 +79,7 @@ class MapFragment : Fragment() {
         // tile servers will get you banned based on this string.
 
         val mLocationListener =
-            LocationListener { setCordText(it.longitude, it.latitude, it.altitude) }
+            LocationListener { setCoordText(it.longitude, it.latitude, it.altitude, it.bearing) }
         if (activityContext.let {
                 ActivityCompat.checkSelfPermission(
                     it,
@@ -99,7 +106,8 @@ class MapFragment : Fragment() {
             LocationManager.GPS_PROVIDER, locationRefreshTime,
             locationRefreshDistance, mLocationListener
         )
-
+        // TODO("Non-ghetto solution for fetching initial location")
+        location = GeoPoint(mLocationManager.getLastKnownLocation(mLocationManager.allProviders[0]))
     }
 
     override fun onCreateView(
@@ -109,13 +117,32 @@ class MapFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_map, container, false)
-        map = view.findViewById(R.id.map)
+        map = view.findViewById(R.id.view_map)
         map.setTileSource(TileSourceFactory.MAPNIK)
         controller = map.controller
-        controller.setZoom(15.0)
-        userMarker = Marker(map)
-        map.overlays.add(userMarker)
-
+        controller.setZoom(21.0)
+        //userMarker = Marker(map)
+        //map.overlays.add(userMarker)
+        overlay = MyLocationNewOverlay(map)
+        overlay.enableAutoStop = false
+        overlay.enableMyLocation()
+        overlay.disableFollowLocation()
+        map.overlays.add(overlay)
+        controller.setCenter(location)
+        lockButton = view.findViewById(R.id.button_lock)
+        lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_24)
+        lockButton.setOnClickListener {
+            isLocked = !isLocked
+            if(isLocked) {
+                map.mapOrientation = 360 - bearing
+                overlay.enableFollowLocation()
+                // change icon
+            } else {
+                map.mapOrientation = 0F
+                overlay.disableFollowLocation()
+                // change icon
+            }
+        }
         return view
     }
 
@@ -160,10 +187,14 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun setCordText(longitude: Double, latitude: Double, altitude: Double): Int =
+    private fun setCoordText(longitude: Double, latitude: Double, altitude: Double, bearing: Float): Int =
         Log.i("Coordinates: ", "long:$longitude, lat:$latitude, alt:$altitude")
-            .also { userMarker.position = GeoPoint(latitude, longitude) }
-            .also { controller.setCenter(userMarker.position) }
+            .also {
+                location = GeoPoint(latitude, longitude, altitude)
+                this.bearing = bearing
+                if(isLocked)
+                    map.mapOrientation = 360 - bearing
+            }
             .also {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     testRoute.coordinates.add(
