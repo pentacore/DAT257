@@ -9,7 +9,6 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import androidx.annotation.RequiresApi
 
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import org.osmdroid.api.IGeoPoint
 import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
@@ -39,7 +37,6 @@ class MapFragment : Fragment() {
 
     //Lock button
     private lateinit var lockButton: Button
-    private var isLocked = false
     private var bearing: Float = 0F
 
     //Conceptual time
@@ -81,7 +78,7 @@ class MapFragment : Fragment() {
         // tile servers will get you banned based on this string.
 
         val mLocationListener =
-            LocationListener { setCoordText(it) }
+            LocationListener { onLocationUpdate(it) }
         if (activityContext.let {
                 ActivityCompat.checkSelfPermission(
                     it,
@@ -133,17 +130,17 @@ class MapFragment : Fragment() {
         map.overlays.add(overlay)
         controller.setCenter(GeoPoint(location))
         lockButton = view.findViewById(R.id.button_lock)
-        lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_24)
+        lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_followmode_inactive)
         lockButton.setOnClickListener {
-            isLocked = !isLocked
-            if (isLocked) {
+            mapFragmentInfo.isFollowModeActive = !mapFragmentInfo.isFollowModeActive
+            if (mapFragmentInfo.isFollowModeActive) {
                 map.mapOrientation = 360 - bearing
                 overlay.enableFollowLocation()
-                // change icon
+                lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_followmode_active)
             } else {
                 map.mapOrientation = 0F
                 overlay.disableFollowLocation()
-                // change icon
+                lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_followmode_inactive)
             }
         }
         mapFragmentInfo.mapLoaded = true
@@ -191,9 +188,9 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun setCoordText(location: Location) {
+    private fun onLocationUpdate(location: Location) {
         this.location = location
-        if (isLocked)
+        if (mapFragmentInfo.isFollowModeActive)
             map.mapOrientation = 360 - location.bearing
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             testRoute.coordinates.add(

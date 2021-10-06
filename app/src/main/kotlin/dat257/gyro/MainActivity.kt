@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : AppCompatActivity() {
-    private var mapLoaded = false
     lateinit var mapFragmentInfo: MapFragmentInfo
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -33,20 +32,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun activateMapFragment(fragment: MapFragment) {
-        if (!mapLoaded) {
-            //Perform boolcheck here on data model to not restart this every time
-            mapLoaded = true
+        if (!this::mapFragmentInfo.isInitialized) {
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fcv_map, fragment)
                 commit()
             }
             supportFragmentManager.executePendingTransactions() //FragmentInfo can only be accessed after it has been initialized
             mapFragmentInfo = fragment.mapFragmentInfo
-        } else {
+        }
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fcv_main, Fragment()) //Replaces the main view with an empty fragment
                 commit()
-            }
         }
     }
 
