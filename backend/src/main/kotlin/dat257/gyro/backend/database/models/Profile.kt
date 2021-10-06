@@ -25,4 +25,15 @@ class Profile(id: EntityID<Int>) : IntEntity(id) {
             }.toList()
         }
     }
+
+    fun getWalkPathsSharedModel(): List<dat257.gyro.shared.dataTypes.WalkPath> {
+        return loggedTransaction {
+            val t = getWalkPaths()
+            val r = emptyList<dat257.gyro.shared.dataTypes.WalkPath>().toMutableList()
+            for (wp in t) {
+                r.add(wp.toSharedModel())
+            }
+            r.toList()
+        }
+    }
 }

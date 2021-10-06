@@ -18,9 +18,9 @@ class WalkPathClassification(id: EntityID<Int>) : IntEntity(id) {
 
     companion object : IntEntityClass<WalkPathClassification>(WalkPathClassifications)
 
-    var walkPath by WalkPathClassifications.walkPath
-    var pathType by WalkPathClassifications.pathType.transform({ it.type }, { PathType.valueOf(it.toString()) })
-    var areaType by WalkPathClassifications.areaType.transform({ it.type }, { AreaType.valueOf(it.toString()) })
+    var walkPath by WalkPath referencedOn WalkPathClassifications.walkPath
+    var pathType by WalkPathClassifications.pathType.transform({ it.toString() }, { PathType.valueOf(it.toString()) })
+    var areaType by WalkPathClassifications.areaType.transform({ it.toString() }, { AreaType.valueOf(it.toString()) })
     var handicapFriendly by WalkPathClassifications.handicapFriendly
     var strollerFriendly by WalkPathClassifications.strollerFriendly
     var lighted by WalkPathClassifications.lighted
