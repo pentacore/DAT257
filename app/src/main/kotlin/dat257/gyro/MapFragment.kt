@@ -121,8 +121,6 @@ class MapFragment : Fragment() {
         map.setTileSource(TileSourceFactory.MAPNIK)
         controller = map.controller
         controller.setZoom(21.0)
-        //userMarker = Marker(map)
-        //map.overlays.add(userMarker)
         overlay = MyLocationNewOverlay(map)
         overlay.enableAutoStop = false
         overlay.enableMyLocation()
