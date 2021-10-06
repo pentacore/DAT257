@@ -11,6 +11,8 @@ abstract class ApiException(val apiError: ApiError):Exception() {
             return when (apiError.errorCode) {
                 ApiErrorCode.AlreadyExists -> AlreadyExistsException(apiError)
                 ApiErrorCode.TargetNotFound -> TargetNotFoundException(apiError)
+                ApiErrorCode.MissingRequiredData -> RequiredDataMissingException(apiError)
+                ApiErrorCode.UserNotFound -> UserNotFoundException(apiError)
             }
         }
     }

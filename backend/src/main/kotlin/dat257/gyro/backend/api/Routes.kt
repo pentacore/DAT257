@@ -13,12 +13,7 @@ class Routes {
             "ping" bind GET to { ping() },
             "pong" bind GET to { pong() },
             "api" bind routes(
-                "walkpath" bind routes(
-                    GET to { req -> WalkPathEndpoint.get(req) },
-                    PUT to { req ->WalkPathEndpoint.put(req) },
-                    PATCH to { req ->WalkPathEndpoint.patch(req) },
-                    DELETE to { req ->WalkPathEndpoint.delete(req) }
-                )
+                "walkpath" bind WalkPathEndpoint.routes()
             )
         )
     }
