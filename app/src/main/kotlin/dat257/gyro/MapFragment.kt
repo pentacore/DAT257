@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
+import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
@@ -49,11 +50,12 @@ class MapFragment : Fragment() {
     private var locationRefreshDistance: Float = 1.01f // exempel vet inte enhet
     private var locationRefreshTime: Long = 1
     private lateinit var overlay: MyLocationNewOverlay
-    private lateinit var location: IGeoPoint
+    private lateinit var location: Location
     //private lateinit var userMarker: Marker
 
     private lateinit var testRoute: Route
 
+    lateinit var mapFragmentInfo:MapFragmentInfo
     /**
      * @author Felix
      * @author Jonathan
@@ -66,7 +68,7 @@ class MapFragment : Fragment() {
         val activityContext = activity
         mLocationManager =
             activityContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val routeInit = mutableListOf<Pair<String,GeoPoint>>()
+        val routeInit = mutableListOf<Pair<String, GeoPoint>>()
         testRoute = Route(routeInit)
         // load/initialize the osmdroid configuration
         // This won't work unless you have imported this: org.osmdroid.config.Configuration.*
@@ -79,7 +81,7 @@ class MapFragment : Fragment() {
         // tile servers will get you banned based on this string.
 
         val mLocationListener =
-            LocationListener { setCoordText(it.longitude, it.latitude, it.altitude, it.bearing) }
+            LocationListener { setCoordText(it) }
         if (activityContext.let {
                 ActivityCompat.checkSelfPermission(
                     it,
@@ -107,7 +109,8 @@ class MapFragment : Fragment() {
             locationRefreshDistance, mLocationListener
         )
         // TODO("Non-ghetto solution for fetching initial location")
-        location = GeoPoint(mLocationManager.getLastKnownLocation(mLocationManager.allProviders[0]))
+        location = mLocationManager.getLastKnownLocation(mLocationManager.allProviders[0])!!
+        mapFragmentInfo = MapFragmentInfo(location)
     }
 
     override fun onCreateView(
@@ -128,12 +131,12 @@ class MapFragment : Fragment() {
         overlay.enableMyLocation()
         overlay.disableFollowLocation()
         map.overlays.add(overlay)
-        controller.setCenter(location)
+        controller.setCenter(GeoPoint(location))
         lockButton = view.findViewById(R.id.button_lock)
         lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_24)
         lockButton.setOnClickListener {
             isLocked = !isLocked
-            if(isLocked) {
+            if (isLocked) {
                 map.mapOrientation = 360 - bearing
                 overlay.enableFollowLocation()
                 // change icon
@@ -143,6 +146,7 @@ class MapFragment : Fragment() {
                 // change icon
             }
         }
+        mapFragmentInfo.mapLoaded = true
         return view
     }
 
@@ -187,25 +191,20 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun setCoordText(longitude: Double, latitude: Double, altitude: Double, bearing: Float): Int =
-        Log.i("Coordinates: ", "long:$longitude, lat:$latitude, alt:$altitude")
-            .also {
-                location = GeoPoint(latitude, longitude, altitude)
-                this.bearing = bearing
-                if(isLocked)
-                    map.mapOrientation = 360 - bearing
-            }
-            .also {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    testRoute.coordinates.add(
-                        Pair(
-                            simpleDateFormat.format(Date()),
-                            GeoPoint(latitude, longitude)
-                        )
-                    )
-                }
-            }
-            .also { drawRoute(testRoute) }
+    private fun setCoordText(location: Location) {
+        this.location = location
+        if (isLocked)
+            map.mapOrientation = 360 - location.bearing
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            testRoute.coordinates.add(
+                Pair(
+                    simpleDateFormat.format(Date()),
+                    GeoPoint(location)
+                )
+            )
+        }
+        drawRoute(testRoute)
+    }
 
     /**
      * @author Erik
