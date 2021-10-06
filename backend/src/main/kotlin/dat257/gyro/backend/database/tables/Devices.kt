@@ -1,7 +1,7 @@
 package dat257.gyro.backend.database.tables
 
 import dat257.gyro.backend.helpers.StringIdTable
-import org.jetbrains.exposed.sql.`java-time`.datetime
+import org.jetbrains.exposed.sql.javatime.datetime
 
 // TODO: Set the ID column length to the correct hwid length
 object Devices : StringIdTable("hwid", "hwid", 15) {

@@ -1,7 +1,7 @@
 package dat257.gyro.backend.database.tables
 
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.`java-time`.datetime
+import org.jetbrains.exposed.sql.javatime.datetime
 
 object WalkPathRatings: IntIdTable() {
     val profile = reference("profile_id", Profiles)
