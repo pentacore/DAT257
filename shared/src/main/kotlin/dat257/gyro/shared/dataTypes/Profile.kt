@@ -204,4 +204,34 @@ data class Profile(
             return valid
         }
     }
+
+    @Serializable
+    data class Preferences(
+        var profileId: Int? = null,
+        var showOnMap:Boolean?=null,
+        var allowFriendRequests:Boolean?=null,
+        var createdAt: LocalDateTime? = null,
+        var updatedAt: LocalDateTime? = null
+    ) : TransferType() {
+        override fun validateForRequest(method: RequestMethod): Boolean {
+            val valid = when (method) {
+                RequestMethod.GET -> Int.notNullAndGTZero(profileId)
+                RequestMethod.STORE -> {
+                    showOnMap != null && allowFriendRequests != null
+                }
+                RequestMethod.UPDATE -> {
+                    Int.notNullAndGTZero(profileId) &&
+                            showOnMap != null &&
+                            allowFriendRequests != null
+                }
+                RequestMethod.DELETE -> return false
+            }
+
+            if (!valid) {
+                throw RequiredDataMissingException(ApiError(ApiErrorCode.MissingRequiredData, "Missing required fields from Blocked object for a $method request"))
+            }
+
+            return valid
+        }
+    }
 }

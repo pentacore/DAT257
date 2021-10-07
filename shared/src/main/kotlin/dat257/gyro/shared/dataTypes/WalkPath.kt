@@ -97,9 +97,22 @@ data class WalkPath(
         override fun validateForRequest(method: RequestMethod): Boolean {
             val valid = when (method) {
                 RequestMethod.GET -> Int.notNullAndGTZero(id) || Int.notNullAndGTZero(walkPathId)
-                RequestMethod.STORE -> TODO()
-                RequestMethod.UPDATE -> TODO()
-                RequestMethod.DELETE -> TODO()
+                RequestMethod.STORE -> {
+                    pathType != null &&
+                            areaType != null &&
+                            handicapFriendly != null &&
+                            strollerFriendly != null &&
+                            lighted != null
+                }
+                RequestMethod.UPDATE -> {
+                    Int.notNullAndGTZero(id) &&
+                            pathType != null &&
+                            areaType != null &&
+                            handicapFriendly != null &&
+                            strollerFriendly != null &&
+                            lighted != null
+                }
+                RequestMethod.DELETE -> return false;
             }
 
             if (!valid) {
@@ -122,8 +135,13 @@ data class WalkPath(
         override fun validateForRequest(method: RequestMethod): Boolean {
             val valid = when (method) {
                 RequestMethod.GET -> Int.notNullAndGTZero(id) || Int.notNullAndGTZero(walkPathId)
-                RequestMethod.STORE,RequestMethod.UPDATE -> {
+                RequestMethod.STORE -> {
                     longitude != null && latitude != null
+                }
+                RequestMethod.UPDATE -> {
+                    Int.notNullAndGTZero(id) &&
+                            longitude != null &&
+                            latitude != null
                 }
                 RequestMethod.DELETE -> Int.notNullAndGTZero(id)
             }
@@ -150,8 +168,13 @@ data class WalkPath(
         override fun validateForRequest(method: RequestMethod): Boolean {
             val valid = when (method) {
                 RequestMethod.GET -> Int.notNullAndGTZero(id) || Int.notNullAndGTZero(walkPathId) || Int.notNullAndGTZero(ownerId)
-                RequestMethod.STORE,RequestMethod.UPDATE -> {
+                RequestMethod.STORE -> {
                     rating != null && comment != null
+                }
+                RequestMethod.UPDATE -> {
+                    Int.notNullAndGTZero(id) &&
+                            rating != null &&
+                            comment != null
                 }
                 RequestMethod.DELETE -> Int.notNullAndGTZero(id)
             }
