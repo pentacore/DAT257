@@ -10,6 +10,7 @@ object Pictures: IntIdTable() {
     val title = text("title")
     val description = text("description")
     val coordinates = text("coordinates")
+    val base64 = text("base64")
     val createdAt = datetime("created_at").default(LocalDateTime.now())
     val updatedAt = datetime("updated_at").default(LocalDateTime.now())
 }

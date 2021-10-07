@@ -46,7 +46,7 @@ data class WalkPath(
                         notNullAndValid(classification, method) &&
                         validateArray(nodes, method)
             }
-            RequestMethod.DELETE -> TODO()
+            RequestMethod.DELETE -> Int.notNullAndGTZero(id)
         }
 
         if (!valid) {
