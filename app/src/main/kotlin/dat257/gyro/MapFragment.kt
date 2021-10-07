@@ -34,6 +34,7 @@ class MapFragment : Fragment() {
     //Map
     private lateinit var map: MapView
     private lateinit var controller: IMapController
+    private var routeLineDrawn : Polyline = Polyline()
 
     //Lock button
     private lateinit var lockButton: Button
@@ -196,9 +197,16 @@ class MapFragment : Fragment() {
                 )
             )
         }
-        drawRoute(mapFragmentInfo.recordedRoute)
+        drawWalkedRoute()
     }
 
+    /**
+     * @author Erik
+     **/
+    private fun drawWalkedRoute(){
+        map.overlays.remove(routeLineDrawn)
+        routeLineDrawn = drawRoute(mapFragmentInfo.recordedRoute)
+    }
     /**
      * @author Erik
      * @author Jonathan

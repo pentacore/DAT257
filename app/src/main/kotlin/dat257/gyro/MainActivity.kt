@@ -7,15 +7,24 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : AppCompatActivity() {
+    lateinit var mapFragment : MapFragment
+    lateinit var timerFragment : MainTimer
     lateinit var mapFragmentInfo: MapFragmentInfo
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-
+        //Setting up timer in code instead
+        timerFragment = MainTimer()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.timerFragment, timerFragment)
+            commit()
+        }
+        //Navigationbar fragments
         val helloWorldFragment = Fragment(R.layout.fragment_hello_world)
-        val mapFragment = MapFragment()
+        mapFragment = MapFragment()
         val helloSettingsFragment = Fragment(R.layout.fragment_hello_settings)
 
         setCurrentFragment(helloWorldFragment)

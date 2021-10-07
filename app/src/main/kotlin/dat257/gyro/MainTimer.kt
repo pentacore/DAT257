@@ -19,8 +19,7 @@ class MainTimer : Fragment()
     private var timerStarted = false
     private lateinit var serviceIntent: Intent
     private var time = 0.0
-
-
+    private lateinit var mainActivity : MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +50,7 @@ class MainTimer : Fragment()
             view.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton).setOnClickListener { startStopTimer()}
             view.findViewById<com.google.android.material.button.MaterialButton>(R.id.resetButton).setOnClickListener { resetTimer() }
 
+            mainActivity = activity as MainActivity
             return view
         }
 
@@ -77,6 +77,8 @@ class MainTimer : Fragment()
         view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.text = "stop"
         //binding.startStopButton.text = "Stop"
         //binding.startStopButton.icon = getDrawable(R.drawable.ic_baseline_pause_24)
+        mainActivity.mapFragmentInfo.recordedRoute=Route(mutableListOf())
+        mainActivity.mapFragmentInfo.isRecording=true
         timerStarted = true
     }
 
@@ -88,6 +90,7 @@ class MainTimer : Fragment()
         view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.text = "start"
        // binding.startStopButton.text = "Start"
         //binding.startStopButton.icon = getDrawable(R.drawable.ic_baseline_play_arrow_24)
+        mainActivity.mapFragmentInfo.isRecording=false
         timerStarted = false
     }
 
