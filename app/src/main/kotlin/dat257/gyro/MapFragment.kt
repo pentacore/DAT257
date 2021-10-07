@@ -50,8 +50,6 @@ class MapFragment : Fragment() {
     private lateinit var location: Location
     //private lateinit var userMarker: Marker
 
-    private lateinit var testRoute: Route
-
     lateinit var mapFragmentInfo:MapFragmentInfo
     /**
      * @author Felix
@@ -65,8 +63,6 @@ class MapFragment : Fragment() {
         val activityContext = activity
         mLocationManager =
             activityContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val routeInit = mutableListOf<Pair<String, GeoPoint>>()
-        testRoute = Route(routeInit)
         // load/initialize the osmdroid configuration
         // This won't work unless you have imported this: org.osmdroid.config.Configuration.*
         getInstance().load(activityContext, activityContext.getSharedPreferences(null, 0))
@@ -188,17 +184,19 @@ class MapFragment : Fragment() {
 
     private fun onLocationUpdate(location: Location) {
         this.location = location
+        //FollowMode
         if (mapFragmentInfo.isFollowModeActive)
             map.mapOrientation = 360 - location.bearing
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            testRoute.coordinates.add(
+        //Record
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && mapFragmentInfo.isRecording) {
+            mapFragmentInfo.recordedRoute.coordinates.add(
                 Pair(
                     simpleDateFormat.format(Date()),
                     GeoPoint(location)
                 )
             )
         }
-        drawRoute(testRoute)
+        drawRoute(mapFragmentInfo.recordedRoute)
     }
 
     /**
