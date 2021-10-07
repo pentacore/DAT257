@@ -1,8 +1,10 @@
 package dat257.gyro.shared.requests
 
 import dat257.gyro.shared.ApiHelper
+import dat257.gyro.shared.enums.RequestMethod
 import dat257.gyro.shared.dataTypes.WalkPath
 import dat257.gyro.shared.types.RequestType
+import dat257.gyro.shared.types.TransferType
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -15,30 +17,22 @@ class WalkPathRequest(override val data: WalkPath, profileUUID: UUID, apiToken: 
     override val endpointUrl = ApiHelper.getApiUrl("/api/walkpath")
 
     override fun store(): Pair<Status, WalkPath> {
-        val request = Request(Method.PUT, endpointUrl)
-        request.body(Json.encodeToString(data))
-        val res = send(request)
+        val res = send(data, endpointUrl, RequestMethod.STORE)
         return res.status to Json.decodeFromString<WalkPath>(res.bodyString())
     }
 
     override fun get(): Pair<Status, WalkPath> {
-        val request = Request(Method.GET, endpointUrl)
-        request.body(Json.encodeToString(data))
-        val res = send(request)
+        val res = send(data, endpointUrl, RequestMethod.GET)
         return res.status to Json.decodeFromString<WalkPath>(res.bodyString())
     }
 
     override fun delete(): Status {
-        val request = Request(Method.DELETE, endpointUrl)
-        request.body(Json.encodeToString(data))
-        val res = send(request)
+        val res = send(data, endpointUrl, RequestMethod.DELETE)
         return res.status
     }
 
     override fun update(): Pair<Status, WalkPath> {
-        val request = Request(Method.PATCH, endpointUrl)
-        request.body(Json.encodeToString(data))
-        val res = send(request)
+        val res = send(data, endpointUrl, RequestMethod.UPDATE)
         return res.status to Json.decodeFromString<WalkPath>(res.bodyString())
     }
 }

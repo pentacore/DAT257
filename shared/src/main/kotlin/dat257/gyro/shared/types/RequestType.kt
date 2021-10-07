@@ -2,14 +2,13 @@ package dat257.gyro.shared.types
 
 import dat257.gyro.shared.ApiHelper
 import dat257.gyro.shared.dataTypes.ApiError
+import dat257.gyro.shared.enums.RequestMethod
 import dat257.gyro.shared.exceptions.ApiException
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.http4k.client.JavaHttpClient
-import org.http4k.core.HttpHandler
-import org.http4k.core.Request
-import org.http4k.core.Response
-import org.http4k.core.Status
+import org.http4k.core.*
 import java.util.*
 
 abstract class RequestType<DataType : TransferType>(private val profileUUID: UUID, private val apiToken:String) {
@@ -33,6 +32,17 @@ abstract class RequestType<DataType : TransferType>(private val profileUUID: UUI
         }
 
         return res
+    }
+
+    protected fun send(data: TransferType, endpointUrl: String, method: RequestMethod): Response {
+        return send(data,endpointUrl,method.to4KMethod())
+    }
+
+    protected fun send(data: TransferType, endpointUrl: String, method: Method): Response {
+        val request = Request(method, endpointUrl)
+        this.data.validateForRequest(RequestMethod.getFrom4KMethod(method))
+        request.body(Json.encodeToString(data))
+        return send(request)
     }
 
     abstract fun store(): Pair<Status, DataType>
