@@ -8,6 +8,7 @@ import org.osmdroid.util.GeoPoint
  * @author Erik
  */
 data class MapFragmentInfo(var location : Location){
+    var shouldStopRecording = false
     var mapLoaded = false
     var isFollowModeActive = false
     var isRecording = false

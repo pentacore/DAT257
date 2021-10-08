@@ -59,6 +59,9 @@ class MainTimer : Fragment()
         stopTimer()
         time = 0.0
         view?.findViewById<TextView>(R.id.timeTV)?.text = getTimeStringFromDouble(time)
+        //Stops the route recording here. Not the best way to do it.
+        mainActivity.mapFragmentInfo.shouldStopRecording=true //TODO: Better communication for this.
+
     }
 
     private fun startStopTimer()
@@ -77,7 +80,6 @@ class MainTimer : Fragment()
         view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.text = "stop"
         //binding.startStopButton.text = "Stop"
         //binding.startStopButton.icon = getDrawable(R.drawable.ic_baseline_pause_24)
-        mainActivity.mapFragmentInfo.recordedRoute=Route(mutableListOf())
         mainActivity.mapFragmentInfo.isRecording=true
         timerStarted = true
     }

@@ -21,6 +21,7 @@ import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.Distance
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Polyline
@@ -49,8 +50,10 @@ class MapFragment : Fragment() {
     private var locationRefreshTime: Long = 1
     private lateinit var overlay: MyLocationNewOverlay
     private lateinit var location: Location
-    //private lateinit var userMarker: Marker
 
+    //Recording functionality
+    private var routeCompleted = false
+    private val distanceThresholdToBreakRecording = 1.0E-7
     lateinit var mapFragmentInfo:MapFragmentInfo
     /**
      * @author Felix
@@ -184,6 +187,26 @@ class MapFragment : Fragment() {
     }
 
     private fun onLocationUpdate(location: Location) {
+        //check if route was completed last time and then reset the route
+        //Not well written. This check is not optimal.
+        // It's better if MainTimer could call functions from here and we were saving routes appropriately.
+        // It will mimic appropriate behaviour for now.
+        if(routeCompleted && mapFragmentInfo.isRecording){
+            mapFragmentInfo.recordedRoute = Route(mutableListOf())
+            routeCompleted =false
+        }
+        //check if previous location is too far away to record.
+        if(mapFragmentInfo.recordedRoute.coordinates.size > 0){
+            val distanceFromPreviousRecordedPointSquared = Distance.getSquaredDistanceToPoint(
+                location.latitude,
+                location.longitude,
+                mapFragmentInfo.recordedRoute.coordinates.last().second.latitude,
+                mapFragmentInfo.recordedRoute.coordinates.last().second.longitude)
+            if( distanceFromPreviousRecordedPointSquared > distanceThresholdToBreakRecording && mapFragmentInfo.isRecording){
+                //TODO: Save away route
+                mapFragmentInfo.recordedRoute = Route(mutableListOf())
+            }
+        }
         this.location = location
         //FollowMode
         if (mapFragmentInfo.isFollowModeActive)
@@ -197,13 +220,19 @@ class MapFragment : Fragment() {
                 )
             )
         }
+        if(mapFragmentInfo.shouldStopRecording){
+            mapFragmentInfo.isRecording = false
+            mapFragmentInfo.shouldStopRecording = false
+            routeCompleted = true
+            //TODO: Save away route AND display the full recorded route until new route is started.
+        }
         drawWalkedRoute()
     }
 
     /**
      * @author Erik
      **/
-    private fun drawWalkedRoute(){
+    private fun drawWalkedRoute() {
         map.overlays.remove(routeLineDrawn)
         routeLineDrawn = drawRoute(mapFragmentInfo.recordedRoute)
     }
