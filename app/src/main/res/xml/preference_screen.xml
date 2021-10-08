@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <PreferenceCategory
+            android:title="One set of settings">
+
+                <CheckBoxPreference
+                    android:key="checkbox_preference"
+                    android:title="Checkbox thingie"
+                    android:defaultValue="true"/>
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="Another set of settings">
+                <CheckBoxPreference
+                    android:key="checkbox_preference"
+                    android:title="Another checkbox thingie"
+                    android:defaultValue="true"/>
+
+        </PreferenceCategory>
+
+</PreferenceScreen>

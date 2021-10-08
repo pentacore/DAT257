@@ -9,12 +9,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+/*
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, SettingsFragment())
+            .commit()
+*/
 
         setContentView(R.layout.activity_main)
 
         val helloWorldFragment = Fragment(R.layout.fragment_hello_world)
         val helloMapFragment = MapFragment()
-        val helloSettingsFragment = Fragment(R.layout.fragment_hello_settings)
+        val helloSettingsFragment = SettingsFragment()
 
         setCurrentFragment(helloWorldFragment)
 
