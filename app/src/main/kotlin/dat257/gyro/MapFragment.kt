@@ -3,17 +3,19 @@ package dat257.gyro
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
+import android.icu.text.SimpleDateFormat
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.material.internal.ContextUtils.getActivity
-import org.osmdroid.api.IGeoPoint
+import androidx.fragment.app.Fragment
 import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
@@ -21,28 +23,47 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polyline
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
-class MapActivity : AppCompatActivity() {
+class MapFragment : Fragment() {
     private val requestPermissionRequestCode = 1
 
-    private lateinit var coordinateModel: Coordinator
     //Map
     private lateinit var map: MapView
     private lateinit var controller: IMapController
 
+    //Conceptual time
+    private lateinit var simpleDateFormat: SimpleDateFormat
+
+
     //Coordinates
-    private lateinit var coordinateView: TextView
     private lateinit var mLocationManager: LocationManager
     private var locationRefreshDistance: Float = 1.01f // exempel vet inte enhet
     private var locationRefreshTime: Long = 1
     private lateinit var userMarker: Marker
+
+    private lateinit var testRoute: Route
+
+    /**
+     * @author Felix
+     * @author Jonathan
+     */
+    // Detta borde vi oroa oss över senare
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mLocationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
+        simpleDateFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        val activityContext = activity
+        mLocationManager =
+            activityContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val routeInit = mutableListOf<Pair<String,GeoPoint>>()
+        testRoute = Route(routeInit)
         // load/initialize the osmdroid configuration
         // This won't work unless you have imported this: org.osmdroid.config.Configuration.*
-        getInstance().load(this, this.getPreferences(0))
+        getInstance().load(activityContext, activityContext.getSharedPreferences(null, 0))
         // setting this before the layout is inflated is a good idea
         // it 'should' ensure that the map has a writable location for the map cache, even without permissions
         // if no tiles are displayed, you can try overriding the cache path using Configuration.getInstance().setCachePath
@@ -50,21 +71,19 @@ class MapActivity : AppCompatActivity() {
         // note, the load method also sets the HTTP User Agent to your application's package name; abusing the osm
         // tile servers will get you banned based on this string.
 
-        // inflate and create the map
-        setContentView(R.layout.activity_map)
-
-        map = findViewById(R.id.map)
-        map.setTileSource(TileSourceFactory.MAPNIK)
-
         val mLocationListener =
             LocationListener { setCordText(it.longitude, it.latitude, it.altitude) }
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+        if (activityContext.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED && activityContext.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
         ) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -81,17 +100,23 @@ class MapActivity : AppCompatActivity() {
             locationRefreshDistance, mLocationListener
         )
 
-        // set zoom and lat/lng for initial view
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_map, container, false)
+        map = view.findViewById(R.id.map)
+        map.setTileSource(TileSourceFactory.MAPNIK)
         controller = map.controller
         controller.setZoom(15.0)
-        val gothenburg: IGeoPoint = GeoPoint(57.708870, 11.974560)
-        controller.setCenter(gothenburg)
-
         userMarker = Marker(map)
-        userMarker.position = GeoPoint(57.708870, 11.974560)
         map.overlays.add(userMarker)
 
-
+        return view
     }
 
     override fun onResume() {
@@ -125,11 +150,13 @@ class MapActivity : AppCompatActivity() {
             i++
         }
         if (permissionsToRequest.size > 0) {
-            ActivityCompat.requestPermissions(
-                this,
-                permissionsToRequest.toTypedArray(),
-                requestPermissionRequestCode
-            )
+            activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    permissionsToRequest.toTypedArray(),
+                    requestPermissionRequestCode
+                )
+            }
         }
     }
 
@@ -137,4 +164,51 @@ class MapActivity : AppCompatActivity() {
         Log.i("Coordinates: ", "long:$longitude, lat:$latitude, alt:$altitude")
             .also { userMarker.position = GeoPoint(latitude, longitude) }
             .also { controller.setCenter(userMarker.position) }
+            .also {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    testRoute.coordinates.add(
+                        Pair(
+                            simpleDateFormat.format(Date()),
+                            GeoPoint(latitude, longitude)
+                        )
+                    )
+                }
+            }
+            .also { drawRoute(testRoute) }
+
+    /**
+     * @author Erik
+     * @author Jonathan
+     * @author Felix
+     **/
+    private fun drawRoute(r: Route): Polyline {
+        val geoPoints = arrayListOf<GeoPoint>()
+        r.coordinates.forEach { geoPoints.add(it.second) }//.forEach{ r.coordinates[it]?.let { it1 -> geoPoints.add(it1) } }
+        val line = Polyline()
+        line.setPoints(geoPoints)
+        /*
+        line.setOnClickListener(new Polyline.OnClickListener() {
+            Toast.makeText(mapView.context, "polyline with " + line.actualPoints.size + " pts was tapped", Toast.LENGTH_LONG).show()
+            return false
+        }
+        */
+        map.overlays.add(line)
+        geoPoints.clear()
+        return line
+    }
+}
+// TODO: 2021-10-03
+// Skapa en generisk drawRoute funktion som tar in en Klass med Settings
+// (med underliggande klass(er) LineSettings)
+// Utöver detta separera funktionen recordRoute (den som användaren spelar in)
+// och drawRoute (den som användaren hämtat "för att följa" (tillkallas separat)
+
+/**
+ * @author Erik
+ * @author Jonathan
+ * @author Felix
+ **/
+data class Route(var coordinates: MutableList<Pair<String, GeoPoint>>) {
+
+
 }
