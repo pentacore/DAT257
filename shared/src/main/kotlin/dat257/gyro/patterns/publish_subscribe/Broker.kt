@@ -9,6 +9,9 @@ import kotlin.collections.HashMap
  * The string is for password
  */
 class Broker(var channels: MutableMap<String,Channel>) {
+    companion object{
+        infix fun Subscriber.subscribe(channel: Channel)
+    }
 
     val authorization : MutableMap<UUID,String> = mutableMapOf<UUID,String>()
 
