@@ -58,6 +58,7 @@ class MapFragment : Fragment() {
     /**
      * @author Felix
      * @author Jonathan
+     * @author Erik
      */
     // Detta borde vi oroa oss över senare
     @RequiresApi(Build.VERSION_CODES.N)
@@ -185,7 +186,10 @@ class MapFragment : Fragment() {
             }
         }
     }
-
+    /**
+     * @author Erik
+     * @author Jonathan
+     **/
     private fun onLocationUpdate(location: Location) {
         //check if route was completed last time and then reset the route
         //Not well written. This check is not optimal.
