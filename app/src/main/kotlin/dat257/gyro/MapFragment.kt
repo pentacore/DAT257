@@ -16,6 +16,9 @@ import androidx.annotation.RequiresApi
 
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import kotlinx.serialization.ExperimentalSerializationApi
+import model.Coordinate
+import model.Route
 import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
@@ -26,8 +29,8 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
+@ExperimentalSerializationApi
 class MapFragment : Fragment() {
     private val requestPermissionRequestCode = 1
 
@@ -59,7 +62,7 @@ class MapFragment : Fragment() {
         val activityContext = activity
         mLocationManager =
             activityContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val routeInit = mutableListOf<Pair<String,GeoPoint>>()
+        val routeInit = mutableListOf<Pair<String,Coordinate>>()
         testRoute = Route(routeInit)
         // load/initialize the osmdroid configuration
         // This won't work unless you have imported this: org.osmdroid.config.Configuration.*
@@ -169,7 +172,7 @@ class MapFragment : Fragment() {
                     testRoute.coordinates.add(
                         Pair(
                             simpleDateFormat.format(Date()),
-                            GeoPoint(latitude, longitude)
+                            Coordinate(latitude, longitude, altitude)
                         )
                     )
                 }
@@ -180,10 +183,16 @@ class MapFragment : Fragment() {
      * @author Erik
      * @author Jonathan
      * @author Felix
+     *
+     * TODO: 2021-10-03
+     * Skapa en generisk drawRoute funktion som tar in en Klass med Settings
+     * (med underliggande klass(er) LineSettings)
+     * Utöver detta separera funktionen recordRoute (den som användaren spelar in)
+     * och drawRoute (den som användaren hämtat "för att följa" (tillkallas separat)
      **/
     private fun drawRoute(r: Route): Polyline {
         val geoPoints = arrayListOf<GeoPoint>()
-        r.coordinates.forEach { geoPoints.add(it.second) }//.forEach{ r.coordinates[it]?.let { it1 -> geoPoints.add(it1) } }
+        r.coordinates.forEach { geoPoints.add(it.second.toGeoPoint()) }//.forEach{ r.coordinates[it]?.let { it1 -> geoPoints.add(it1) } }
         val line = Polyline()
         line.setPoints(geoPoints)
         /*
@@ -197,18 +206,4 @@ class MapFragment : Fragment() {
         return line
     }
 }
-// TODO: 2021-10-03
-// Skapa en generisk drawRoute funktion som tar in en Klass med Settings
-// (med underliggande klass(er) LineSettings)
-// Utöver detta separera funktionen recordRoute (den som användaren spelar in)
-// och drawRoute (den som användaren hämtat "för att följa" (tillkallas separat)
 
-/**
- * @author Erik
- * @author Jonathan
- * @author Felix
- **/
-data class Route(var coordinates: MutableList<Pair<String, GeoPoint>>) {
-
-
-}
