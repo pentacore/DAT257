@@ -107,7 +107,9 @@ class MapFragment : Fragment() {
             locationRefreshDistance, mLocationListener
         )
         // TODO("Non-ghetto solution for fetching initial location")
-        location = mLocationManager.getLastKnownLocation(mLocationManager.allProviders[0])!!
+        //Can still potentially be null, but should work better with providing an actual provider. Could check multiple providers
+        //But muliple providers would only lessen the amount of nulls, not eliminate then entirely.
+        location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
         mapFragmentInfo = MapFragmentInfo(location)
     }
 
