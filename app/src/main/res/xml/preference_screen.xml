@@ -10,11 +10,12 @@
 
         <EditTextPreference
             android:key="@string/displayName"
-            android:summary="@string/displayName"
+            app:defaultValue="Kim Doe"
+            app:useSimpleSummaryProvider="true"
             android:title="Display name" />
 
         <Preference android:title="Cloud settings">
-            <intent android:action="" />
+            <intent android:action="android.intent.action.SEND" />
         </Preference>
     </PreferenceCategory>
 
@@ -23,14 +24,16 @@
         android:icon="@drawable/ic_menu_compass">
         <ListPreference
             android:entries="@array/magnitude_settings"
-            android:entryValues="@string/Measurements"
+            android:entryValues="@array/reply_values"
             android:key="list"
-            android:summary="@string/Measurements"
-            android:title="Measurements" />
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="metric"
+            android:title="Measurements"
+            />
 
         <EditTextPreference
             android:entryValues="@string/routeLength"
-            android:key="list"
+            android:key="route_len"
             android:summary="@string/routeLength"
             android:title="Optimal route length" />
 
