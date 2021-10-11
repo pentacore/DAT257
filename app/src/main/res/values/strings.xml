@@ -12,4 +12,6 @@
     <string name="dialog_title_edittext_preference">errorDialog</string>
     <string name="dialog_title_list_preference">You should enter something</string>
     <string name="title_intent_preference">Intent preference</string>
+    <string name="displayName">displayName</string>
+    <string name="routeLength">routeLength</string>
 </resources>

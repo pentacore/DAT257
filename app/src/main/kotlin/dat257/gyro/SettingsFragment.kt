@@ -8,5 +8,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         setPreferencesFromResource(R.xml.preference_screen, rootKey)
 
+
     }
 }

@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <PreferenceCategory
-            android:title="One set of settings">
+    <PreferenceCategory
+        android:title="Account settings"
+        android:icon="@drawable/person">
 
-                <CheckBoxPreference
-                    android:key="checkbox_preference"
-                    android:title="Checkbox thingie"
-                    android:defaultValue="true"/>
-        </PreferenceCategory>
+        <EditTextPreference
+            android:key="@string/displayName"
+            android:summary="@string/displayName"
+            android:title="Display name" />
 
-        <PreferenceCategory
-            android:title="Another set of settings">
-                <CheckBoxPreference
-                    android:key="checkbox_preference"
-                    android:title="Another checkbox thingie"
-                    android:defaultValue="true"/>
+        <Preference android:title="Cloud settings">
+            <intent android:action="" />
+        </Preference>
+    </PreferenceCategory>
 
-        </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Route settings"
+        android:icon="@drawable/ic_menu_compass">
+        <ListPreference
+            android:entries="@array/magnitude_settings"
+            android:entryValues="@string/Measurements"
+            android:key="list"
+            android:summary="@string/Measurements"
+            android:title="Measurements" />
+
+        <EditTextPreference
+            android:entryValues="@string/routeLength"
+            android:key="list"
+            android:summary="@string/routeLength"
+            android:title="Optimal route length" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
