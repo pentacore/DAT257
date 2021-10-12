@@ -48,9 +48,6 @@ class MapFragment : Fragment(), Subscriber {
     private lateinit var simpleDateFormat: SimpleDateFormat
 
     //Coordinates
-    private lateinit var mLocationManager: LocationManager
-    private var locationRefreshDistance: Float = 1.01f // exempel vet inte enhet
-    private var locationRefreshTime: Long = 1
     private lateinit var overlay: MyLocationNewOverlay
     private lateinit var location: Location
 
@@ -70,51 +67,19 @@ class MapFragment : Fragment(), Subscriber {
         super.onCreate(savedInstanceState)
         simpleDateFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         val activityContext = activity
-        mLocationManager =
-            activityContext?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         // load/initialize the osmdroid configuration
         // This won't work unless you have imported this: org.osmdroid.config.Configuration.*
-        getInstance().load(activityContext, activityContext.getSharedPreferences(null, 0))
+        if (activityContext != null) {
+            getInstance().load(activityContext, activityContext.getSharedPreferences(null, 0))
+        }
         // setting this before the layout is inflated is a good idea
         // it 'should' ensure that the map has a writable location for the map cache, even without permissions
         // if no tiles are displayed, you can try overriding the cache path using Configuration.getInstance().setCachePath
         // see also StorageUtils
         // note, the load method also sets the HTTP User Agent to your application's package name; abusing the osm
         // tile servers will get you banned based on this string.
-
-        val mLocationListener =
-            LocationListener { onLocationUpdate(it) }
-        if (activityContext.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED && activityContext.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-
-        mLocationManager.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER, locationRefreshTime,
-            locationRefreshDistance, mLocationListener
-        )
-        // TODO("Non-ghetto solution for fetching initial location")
-        //Can still potentially be null, but should work better with providing an actual provider. Could check multiple providers
-        //But muliple providers would only lessen the amount of nulls, not eliminate then entirely.
-        location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
-        mapFragmentInfo = MapFragmentInfo(location)
+        subscribe(ChannelName.Location)
+        mapFragmentInfo = MapFragmentInfo(null)
     }
 
     override fun onCreateView(
@@ -133,7 +98,7 @@ class MapFragment : Fragment(), Subscriber {
         overlay.enableMyLocation()
         overlay.disableFollowLocation()
         map.overlays.add(overlay)
-        controller.setCenter(GeoPoint(location))
+        //controller.setCenter(GeoPoint(location))
         lockButton = view.findViewById(R.id.button_lock)
         lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_followmode_inactive)
         lockButton.setOnClickListener {
@@ -168,29 +133,6 @@ class MapFragment : Fragment(), Subscriber {
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         //Configuration.getInstance().save(this, prefs);
         map.onPause()  //needed for compass, my location overlays, v6.0.0 and up
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        val permissionsToRequest = ArrayList<String>()
-        var i = 0
-        while (i < grantResults.size) {
-            permissionsToRequest.add(permissions[i])
-            i++
-        }
-        if (permissionsToRequest.size > 0) {
-            activity?.let {
-                ActivityCompat.requestPermissions(
-                    it,
-                    permissionsToRequest.toTypedArray(),
-                    requestPermissionRequestCode
-                )
-            }
-        }
     }
 
     /**
