@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                 replace(R.id.fcv_map, fragment)
                 commit()
             }
-            //supportFragmentManager.executePendingTransactions() //FragmentInfo can only be accessed after it has been initialized
+            supportFragmentManager.executePendingTransactions() //FragmentInfo can only be accessed after it has been initialized
         }
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fcv_main, Fragment()) //Replaces the main view with an empty fragment
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
+
             replace(R.id.fcv_main, fragment)
             commit()
         }

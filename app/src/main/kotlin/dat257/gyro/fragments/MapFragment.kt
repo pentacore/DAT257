@@ -106,6 +106,11 @@ class MapFragment : Fragment(), Subscriber {
         return view
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        map.onDetach()
+    }
+
     override fun onResume() {
         super.onResume()
         //this will refresh the osmdroid configuration on resuming.
@@ -128,7 +133,6 @@ class MapFragment : Fragment(), Subscriber {
      * @author Erik
      * @author Jonathan
      **/
-
     private var isFirstLocationUpdate = true
     private fun onLocationUpdate(location: Location) {
         if (isFirstLocationUpdate) {
@@ -140,10 +144,12 @@ class MapFragment : Fragment(), Subscriber {
         // It's better if MainTimer could call functions from here and we were saving routes appropriately.
         // It will mimic appropriate behaviour for now.
         /*
+
         if (routeCompleted && mapFragmentInfo.isRecording) {
             mapFragmentInfo.recordedRoute = Route(mutableListOf())
             routeCompleted = false
         }
+
         //check if previous location is too far away to record.
         if (mapFragmentInfo.recordedRoute.coordinates.size > 0) {
             val distanceFromPreviousRecordedPointSquared = Distance.getSquaredDistanceToPoint(
@@ -152,6 +158,7 @@ class MapFragment : Fragment(), Subscriber {
                 mapFragmentInfo.recordedRoute.coordinates.last().second.latitude,
                 mapFragmentInfo.recordedRoute.coordinates.last().second.longitude
             )
+
             if (distanceFromPreviousRecordedPointSquared > distanceThresholdToBreakRecording && mapFragmentInfo.isRecording) {
                 //TODO: Save away route
                 mapFragmentInfo.recordedRoute = Route(mutableListOf())
@@ -206,8 +213,16 @@ class MapFragment : Fragment(), Subscriber {
     }
 
     override fun onUpdate(source: ChannelName, message: Message<*>) {
-        Log.i("In Mapfragment: ", "onUpdate")
-        onLocationUpdate(message.payload as Location)
+        with(message) {
+            when (source) {
+                ChannelName.Location -> {
+                    onLocationUpdate(payload as Location)
+                }
+
+            }
+        }.also {
+            Log.d("Mapfragment, onupdate","source: ${source.name}")
+        }
     }
 }
 // TODO: 2021-10-03
