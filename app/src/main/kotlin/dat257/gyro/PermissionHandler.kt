@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 
 class PermissionHandler {
-
     companion object{
         fun location(context: Context){
             if (ActivityCompat.checkSelfPermission(

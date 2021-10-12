@@ -276,5 +276,4 @@ class MapFragment : Fragment() {
  **/
 data class Route(var coordinates: MutableList<Pair<String, GeoPoint>>) {
 
-
 }

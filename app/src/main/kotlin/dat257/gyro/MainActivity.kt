@@ -1,5 +1,6 @@
 package dat257.gyro
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -22,12 +23,20 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.timerFragment, timerFragment)
             commit()
         }
+        /**
+         * @author Jonathan
+         */
+        startService(
+            Intent(this, LocationService().javaClass) // Fråga mig inte ens , läs på om intents, dem verkar coola osv
+        )
+
         //Navigationbar fragments
         val helloWorldFragment = Fragment(R.layout.fragment_hello_world)
         mapFragment = MapFragment()
         val helloSettingsFragment = Fragment(R.layout.fragment_hello_settings)
 
         setCurrentFragment(helloWorldFragment)
+
 
         findViewById<NavigationBarView>(R.id.bottomNavigation).setOnItemSelectedListener {
             when (it.itemId) {
