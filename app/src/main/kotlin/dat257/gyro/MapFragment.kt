@@ -9,6 +9,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,7 +98,6 @@ class MapFragment : Fragment(), Subscriber {
         overlay.enableMyLocation()
         overlay.disableFollowLocation()
         map.overlays.add(overlay)
-        //controller.setCenter(GeoPoint(location))
         lockButton = view.findViewById(R.id.button_lock)
         lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_followmode_inactive)
         lockButton.setOnClickListener {
@@ -112,6 +112,7 @@ class MapFragment : Fragment(), Subscriber {
                 lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_followmode_inactive)
             }
         }
+        Log.i("In onView:", "Hi")
         return view
     }
 
@@ -137,7 +138,14 @@ class MapFragment : Fragment(), Subscriber {
      * @author Erik
      * @author Jonathan
      **/
+
+    private var isFirstLocationUpdate = true
     private fun onLocationUpdate(location: Location) {
+        Log.i("In onView:", "Hi")
+        if(isFirstLocationUpdate){
+            Log.i("in First Load: ", "Nagot konstigt")
+            controller.setCenter(GeoPoint(location))
+        }
         //check if route was completed last time and then reset the route
         //Not well written. This check is not optimal.
         // It's better if MainTimer could call functions from here and we were saving routes appropriately.
@@ -215,6 +223,7 @@ class MapFragment : Fragment(), Subscriber {
     }
 
     override fun onUpdate(source: ChannelName, message: Message<*>) {
+        Log.i("In Mapfragment: ", "onUpdate")
         onLocationUpdate(message.payload as Location)
     }
 }

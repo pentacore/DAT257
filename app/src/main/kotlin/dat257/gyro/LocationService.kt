@@ -26,7 +26,6 @@ class LocationService: Service(), Publisher {
     private val refreshDistance: Float = 1.01f // exempel vet inte enhet
     private val refreshTime: Long = 1
     private lateinit var locationListener: LocationListener
-
     /**
      * @author Jonathan
      */
