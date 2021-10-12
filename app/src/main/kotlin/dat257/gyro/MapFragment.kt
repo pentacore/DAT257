@@ -17,6 +17,9 @@ import androidx.annotation.RequiresApi
 
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import dat257.gyro.patterns.publisherSubscriber.ChannelName
+import dat257.gyro.patterns.publisherSubscriber.Message
+import dat257.gyro.patterns.publisherSubscriber.Subscriber
 import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
@@ -29,13 +32,13 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), Subscriber {
     private val requestPermissionRequestCode = 1
 
     //Map
     private lateinit var map: MapView
     private lateinit var controller: IMapController
-    private var routeLineDrawn : Polyline = Polyline()
+    private var routeLineDrawn: Polyline = Polyline()
 
     //Lock button
     private lateinit var lockButton: Button
@@ -54,7 +57,8 @@ class MapFragment : Fragment() {
     //Recording functionality
     private var routeCompleted = false
     private val distanceThresholdToBreakRecording = 1.0E-7
-    lateinit var mapFragmentInfo:MapFragmentInfo
+    lateinit var mapFragmentInfo: MapFragmentInfo
+
     /**
      * @author Felix
      * @author Jonathan
@@ -188,6 +192,7 @@ class MapFragment : Fragment() {
             }
         }
     }
+
     /**
      * @author Erik
      * @author Jonathan
@@ -197,18 +202,19 @@ class MapFragment : Fragment() {
         //Not well written. This check is not optimal.
         // It's better if MainTimer could call functions from here and we were saving routes appropriately.
         // It will mimic appropriate behaviour for now.
-        if(routeCompleted && mapFragmentInfo.isRecording){
+        if (routeCompleted && mapFragmentInfo.isRecording) {
             mapFragmentInfo.recordedRoute = Route(mutableListOf())
-            routeCompleted =false
+            routeCompleted = false
         }
         //check if previous location is too far away to record.
-        if(mapFragmentInfo.recordedRoute.coordinates.size > 0){
+        if (mapFragmentInfo.recordedRoute.coordinates.size > 0) {
             val distanceFromPreviousRecordedPointSquared = Distance.getSquaredDistanceToPoint(
                 location.latitude,
                 location.longitude,
                 mapFragmentInfo.recordedRoute.coordinates.last().second.latitude,
-                mapFragmentInfo.recordedRoute.coordinates.last().second.longitude)
-            if( distanceFromPreviousRecordedPointSquared > distanceThresholdToBreakRecording && mapFragmentInfo.isRecording){
+                mapFragmentInfo.recordedRoute.coordinates.last().second.longitude
+            )
+            if (distanceFromPreviousRecordedPointSquared > distanceThresholdToBreakRecording && mapFragmentInfo.isRecording) {
                 //TODO: Save away route
                 mapFragmentInfo.recordedRoute = Route(mutableListOf())
             }
@@ -226,7 +232,7 @@ class MapFragment : Fragment() {
                 )
             )
         }
-        if(mapFragmentInfo.shouldStopRecording){
+        if (mapFragmentInfo.shouldStopRecording) {
             mapFragmentInfo.isRecording = false
             mapFragmentInfo.shouldStopRecording = false
             routeCompleted = true
@@ -242,6 +248,7 @@ class MapFragment : Fragment() {
         map.overlays.remove(routeLineDrawn)
         routeLineDrawn = drawRoute(mapFragmentInfo.recordedRoute)
     }
+
     /**
      * @author Erik
      * @author Jonathan
@@ -261,6 +268,10 @@ class MapFragment : Fragment() {
         map.overlays.add(line)
         geoPoints.clear()
         return line
+    }
+
+    override fun onUpdate(source: ChannelName, message: Message<*>) {
+        onLocationUpdate(message.payload as Location)
     }
 }
 // TODO: 2021-10-03
