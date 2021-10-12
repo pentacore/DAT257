@@ -1,4 +1,4 @@
-package dat257.gyro
+package dat257.gyro.fragments
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -11,10 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import dat257.gyro.MainActivity
+import dat257.gyro.R
 import dat257.gyro.services.TimerService
 import kotlin.math.roundToInt
 
-class MainTimer : Fragment()
+class TimerFragment : Fragment()
 {
    // private lateinit var binding:
     private var timerStarted = false

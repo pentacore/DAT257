@@ -57,6 +57,7 @@ class MapFragment : Fragment(), Subscriber {
     private var routeCompleted = false
     private val distanceThresholdToBreakRecording = 1.0E-7
     private var recordedRoute = Route(mutableListOf())
+
     /**
      * @author Felix
      * @author Jonathan
@@ -141,10 +142,9 @@ class MapFragment : Fragment(), Subscriber {
 
     private var isFirstLocationUpdate = true
     private fun onLocationUpdate(location: Location) {
-        Log.i("In onView:", "Hi")
-        if(isFirstLocationUpdate){
-            Log.i("in First Load: ", "Nagot konstigt")
+        if (isFirstLocationUpdate) {
             controller.setCenter(GeoPoint(location))
+            isFirstLocationUpdate = false
         }
         //check if route was completed last time and then reset the route
         //Not well written. This check is not optimal.

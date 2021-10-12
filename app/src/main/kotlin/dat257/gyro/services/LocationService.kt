@@ -25,8 +25,6 @@ class LocationService : Service(), Publisher {
 
     //Coordinates
     private lateinit var locationClient: FusedLocationProviderClient
-    private lateinit var locationListener: LocationListener
-
     /**
      * @author Jonathan
      * @author Erik
