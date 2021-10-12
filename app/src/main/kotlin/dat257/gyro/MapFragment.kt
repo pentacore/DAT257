@@ -39,6 +39,7 @@ class MapFragment : Fragment(), Subscriber {
     private lateinit var map: MapView
     private lateinit var controller: IMapController
     private var routeLineDrawn: Polyline = Polyline()
+    private var isFollowModeActive = false
 
     //Lock button
     private lateinit var lockButton: Button
@@ -54,8 +55,7 @@ class MapFragment : Fragment(), Subscriber {
     //Recording functionality
     private var routeCompleted = false
     private val distanceThresholdToBreakRecording = 1.0E-7
-    lateinit var mapFragmentInfo: MapFragmentInfo
-
+    private var recordedRoute = Route(mutableListOf())
     /**
      * @author Felix
      * @author Jonathan
@@ -79,7 +79,6 @@ class MapFragment : Fragment(), Subscriber {
         // note, the load method also sets the HTTP User Agent to your application's package name; abusing the osm
         // tile servers will get you banned based on this string.
         subscribe(ChannelName.Location)
-        mapFragmentInfo = MapFragmentInfo(null)
     }
 
     override fun onCreateView(
@@ -102,8 +101,8 @@ class MapFragment : Fragment(), Subscriber {
         lockButton = view.findViewById(R.id.button_lock)
         lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_followmode_inactive)
         lockButton.setOnClickListener {
-            mapFragmentInfo.isFollowModeActive = !mapFragmentInfo.isFollowModeActive
-            if (mapFragmentInfo.isFollowModeActive) {
+            isFollowModeActive = !isFollowModeActive
+            if (isFollowModeActive) {
                 map.mapOrientation = 360 - bearing
                 overlay.enableFollowLocation()
                 lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_followmode_active)
@@ -113,7 +112,6 @@ class MapFragment : Fragment(), Subscriber {
                 lockButton.setBackgroundResource(R.drawable.ic_baseline_navigation_followmode_inactive)
             }
         }
-        mapFragmentInfo.mapLoaded = true
         return view
     }
 
@@ -144,6 +142,7 @@ class MapFragment : Fragment(), Subscriber {
         //Not well written. This check is not optimal.
         // It's better if MainTimer could call functions from here and we were saving routes appropriately.
         // It will mimic appropriate behaviour for now.
+        /*
         if (routeCompleted && mapFragmentInfo.isRecording) {
             mapFragmentInfo.recordedRoute = Route(mutableListOf())
             routeCompleted = false
@@ -161,25 +160,28 @@ class MapFragment : Fragment(), Subscriber {
                 mapFragmentInfo.recordedRoute = Route(mutableListOf())
             }
         }
+        */
         this.location = location
         //FollowMode
-        if (mapFragmentInfo.isFollowModeActive)
+        if (isFollowModeActive)
             map.mapOrientation = 360 - location.bearing
         //Record
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && mapFragmentInfo.isRecording) {
-            mapFragmentInfo.recordedRoute.coordinates.add(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            recordedRoute.coordinates.add(
                 Pair(
                     simpleDateFormat.format(Date()),
                     GeoPoint(location)
                 )
             )
         }
+        /*
         if (mapFragmentInfo.shouldStopRecording) {
             mapFragmentInfo.isRecording = false
             mapFragmentInfo.shouldStopRecording = false
             routeCompleted = true
             //TODO: Save away route AND display the full recorded route until new route is started.
         }
+        */
         drawWalkedRoute()
     }
 
@@ -188,7 +190,7 @@ class MapFragment : Fragment(), Subscriber {
      **/
     private fun drawWalkedRoute() {
         map.overlays.remove(routeLineDrawn)
-        routeLineDrawn = drawRoute(mapFragmentInfo.recordedRoute)
+        routeLineDrawn = drawRoute(recordedRoute)
     }
 
     /**
