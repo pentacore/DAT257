@@ -15,7 +15,7 @@ import java.util.*
 
 class RouteService : Service(), Publisher {
     override fun onBind(p0: Intent?): IBinder? = null
-    private lateinit var  routeModel : RouteModel
+    private val routeModel: RouteModel
 
     init {
         createChannel(ChannelName.Route)

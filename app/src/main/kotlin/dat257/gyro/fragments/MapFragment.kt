@@ -186,13 +186,13 @@ class MapFragment : Fragment(), Subscriber {
             //TODO: Save away route AND display the full recorded route until new route is started.
         }
         */
-        drawWalkedRoute()
+        redrawWalkedRoute()
     }
 
     /**
      * @author Erik
      **/
-    private fun drawWalkedRoute() {
+    private fun redrawWalkedRoute() {
         map.overlays.remove(routeLineDrawn)
         routeLineDrawn = drawRoute(recordedRoute)
     }
@@ -203,13 +203,17 @@ class MapFragment : Fragment(), Subscriber {
      * @author Felix
      **/
     private fun drawRoute(r: Route): Polyline {
-        val geoPoints = arrayListOf<GeoPoint>()
-        r.coordinates.forEach { geoPoints.add(it.second) }//.forEach{ r.coordinates[it]?.let { it1 -> geoPoints.add(it1) } }
-        val line = Polyline()
-        line.setPoints(geoPoints)
+        val line = Polyline() fromRoute r
         map.overlays.add(line)
-        geoPoints.clear()
         return line
+    }
+
+    private infix fun Polyline.fromRoute(route: Route): Polyline {
+        val geoPoints = arrayListOf<GeoPoint>()
+        route.coordinates.forEach { geoPoints.add(it.second) }
+        var polyline = Polyline()
+        polyline.setPoints(geoPoints)
+        return polyline
     }
 
     override fun onUpdate(source: ChannelName, message: Message<*>) {
