@@ -10,10 +10,11 @@ import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
 import dat257.gyro.patterns.publisherSubscriber.Publisher
 import dat257.gyro.patterns.publisherSubscriber.Subscriber
+import org.osmdroid.util.GeoPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RouteService : Service(), Publisher {
+class RouteService : Service(), Publisher, Subscriber {
     override fun onBind(p0: Intent?): IBinder? = null
     private val routeModel: RouteModel
 
@@ -22,19 +23,7 @@ class RouteService : Service(), Publisher {
         routeModel = RouteModel()
     }
 
-    internal fun retrieve(location: Location): Nothing = TODO()
-}
-
-
-typealias GeoTime = Pair<Location, String>
-
-class RouteModel() : Subscriber {
-    private val routeData = RouteData()
-
-    init {
-        subscribe(channel = ChannelName.Location)
-    }
-
+    internal fun retrieve(location: Location): RouteModel.RouteData = TODO()
     override fun onUpdate(source: ChannelName, message: Message<*>) {
         when (source) {
             ChannelName.Location -> {
@@ -44,7 +33,12 @@ class RouteModel() : Subscriber {
                         val dateString: String =
                             SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
                                 .format(Calendar.getInstance().time)
-                        routeData.append(GeoTime(payload, dateString))
+                        routeData.append(
+                            GeoTime(
+                                GeoPoint(payload),
+                                dateString
+                            )
+                        )
                     } else throw IllegalPayloadException("", "")
                 }
             }
@@ -53,11 +47,25 @@ class RouteModel() : Subscriber {
             }
         }
     }
+}
+
+
+typealias GeoTime = Pair<GeoPoint, String>
+
+class RouteModel() : Subscriber {
+    private val routeData = RouteData()
+
+    init {
+        subscribe(channel = ChannelName.Location)
+    }
+
+
+    override fun onUpdate(source: ChannelName, message: Message<*>) =
 
     data class RouteData(
         private var record: MutableList<GeoTime> = mutableListOf()
     ) {
-        fun append(geoTime: GeoTime) = record.add(geoTime)
+        fun refresh(geoTime: GeoTime): MutableList<GeoTime> = record.apply { add(geoTime) }
     }
 }
 
