@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
+import dat257.gyro.fragments.MapFragment
 import dat257.gyro.fragments.TimerFragment
 import dat257.gyro.services.LocationService
 

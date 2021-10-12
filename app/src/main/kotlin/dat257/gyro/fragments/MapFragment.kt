@@ -1,12 +1,7 @@
-package dat257.gyro
+package dat257.gyro.fragments
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,8 +11,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.RequiresApi
 
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import dat257.gyro.R
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
 import dat257.gyro.patterns.publisherSubscriber.Subscriber
@@ -25,16 +20,13 @@ import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.Distance
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MapFragment : Fragment(), Subscriber {
-    private val requestPermissionRequestCode = 1
 
     //Map
     private lateinit var map: MapView
@@ -53,9 +45,6 @@ class MapFragment : Fragment(), Subscriber {
     private lateinit var overlay: MyLocationNewOverlay
     private lateinit var location: Location
 
-    //Recording functionality
-    private var routeCompleted = false
-    private val distanceThresholdToBreakRecording = 1.0E-7
     private var recordedRoute = Route(mutableListOf())
 
     /**
@@ -211,12 +200,6 @@ class MapFragment : Fragment(), Subscriber {
         r.coordinates.forEach { geoPoints.add(it.second) }//.forEach{ r.coordinates[it]?.let { it1 -> geoPoints.add(it1) } }
         val line = Polyline()
         line.setPoints(geoPoints)
-        /*
-        line.setOnClickListener(new Polyline.OnClickListener() {
-            Toast.makeText(mapView.context, "polyline with " + line.actualPoints.size + " pts was tapped", Toast.LENGTH_LONG).show()
-            return false
-        }
-        */
         map.overlays.add(line)
         geoPoints.clear()
         return line
