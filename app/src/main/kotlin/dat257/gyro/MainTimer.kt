@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import dat257.gyro.services.TimerService
 import kotlin.math.roundToInt
 
 class MainTimer : Fragment()

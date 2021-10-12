@@ -1,4 +1,4 @@
-package dat257.gyro
+package dat257.gyro.services
 
 import android.annotation.SuppressLint
 import android.app.Service
@@ -9,11 +9,12 @@ import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.*
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.Task
+import dat257.gyro.PermissionHandler
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
 import dat257.gyro.patterns.publisherSubscriber.Publisher
+
+private const val REFRESH_TIME: Long = 10000 // exempel vet inte enhet
 
 /**
  * @author Jonathan
@@ -24,8 +25,6 @@ class LocationService : Service(), Publisher {
 
     //Coordinates
     private lateinit var locationClient: FusedLocationProviderClient
-    private val refreshDistance: Float = 1.01f // exempel vet inte enhet
-    private val refreshTime: Long = 1
     private lateinit var locationListener: LocationListener
 
     /**
@@ -45,16 +44,7 @@ class LocationService : Service(), Publisher {
                 }
             }
         val locationRequest = createLocationRequest()
-        //locationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
-        /*
-        val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest)
-        val client: SettingsClient = LocationServices.getSettingsClient(this)
-        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
 
-
-        task.addOnSuccessListener { locationSettingsResponds ->
-*/
         val locationCallback = object : LocationCallback(){
             override fun onLocationResult(locationResult: LocationResult){
                 onLocationUpdate(locationResult.locations.last())
@@ -72,7 +62,7 @@ class LocationService : Service(), Publisher {
      */
     private fun createLocationRequest(): LocationRequest {
         return LocationRequest.create().apply {
-            interval = 10000
+            interval = REFRESH_TIME
             fastestInterval = 5000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
@@ -81,8 +71,14 @@ class LocationService : Service(), Publisher {
     /**
      * @author Jonathan
      */
-    public fun onLocationUpdate(location: Location) = with(Message(location)) {
-        Log.d("LocationService", "Location updated")
+    fun onLocationUpdate(location: Location) = with(Message(location)) {
         publish(ChannelName.Location, this)
+    }.also {
+        with(location){
+            Log.i("Location","Updated:\n" +
+                    " longitude: $longitude \n" +
+                    " latitude: $latitude \n" +
+                    " altitude $altitude \n")
+        }
     }
 }
