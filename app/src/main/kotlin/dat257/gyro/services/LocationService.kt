@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.location.Location
-import android.location.LocationListener
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log

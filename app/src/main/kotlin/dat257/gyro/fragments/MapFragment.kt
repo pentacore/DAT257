@@ -12,10 +12,12 @@ import android.widget.Button
 import androidx.annotation.RequiresApi
 
 import androidx.fragment.app.Fragment
+import dat257.gyro.IllegalPayloadException
 import dat257.gyro.R
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
 import dat257.gyro.patterns.publisherSubscriber.Subscriber
+import dat257.gyro.services.RouteData
 import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
@@ -197,6 +199,13 @@ class MapFragment : Fragment(), Subscriber {
         routeLineDrawn = drawRoute(recordedRoute)
     }
 
+    private lateinit var oldRoute: Route
+    private fun updateRoute(new: RouteData, old: RouteData?) =
+        map.overlays.remove(Polyline() fromRoute oldRoute)
+            .also { drawRoute(new) }
+            .also { oldRoute = new }
+
+
     /**
      * @author Erik
      * @author Jonathan
@@ -220,12 +229,20 @@ class MapFragment : Fragment(), Subscriber {
         with(message) {
             when (source) {
                 ChannelName.Location -> {
-                    onLocationUpdate(payload as Location)
+                    if (payload is Location) onLocationUpdate(payload)
+                    else throw IllegalPayloadException("", "")
                 }
-
+                ChannelName.Route -> {
+                    with(payload as Pair<*, *>){
+                        updateRoute(first as RouteData, second as RouteData?)
+                    }
+                }
+                else ->
+                    throw IllegalArgumentException("subscription error in mapfragment:" +
+                            "\n channel = ${source.name}")
             }
         }.also {
-            Log.d("Mapfragment, onupdate","source: ${source.name}")
+            Log.d("Mapfragment, onupdate", "source: ${source.name}")
         }
     }
 }

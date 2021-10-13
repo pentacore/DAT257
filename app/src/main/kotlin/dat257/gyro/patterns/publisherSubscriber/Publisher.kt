@@ -1,5 +1,7 @@
 package dat257.gyro.patterns.publisherSubscriber
 
+import android.location.Location
+
 /**
  * @author Jonathan Sargent
  * Describes party that publishes and creates channels of communications

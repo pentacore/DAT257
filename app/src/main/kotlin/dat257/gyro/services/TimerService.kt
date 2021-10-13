@@ -40,5 +40,4 @@ class TimerService : Service()
         const val TIMER_UPDATED = "timerUpdated"
         const val TIME_EXTRA = "timeExtra"
     }
-
 }

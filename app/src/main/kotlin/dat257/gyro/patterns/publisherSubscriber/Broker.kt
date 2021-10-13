@@ -8,8 +8,31 @@ import dat257.gyro.BrokerActionException
 enum class ChannelName {
     Timer,
     Location,
-    Route
+    Route,
+    RouteServiceInternal
 }
+
+/**
+ * @author Jonathan
+ * standardstruktur för ett schema:
+ * Object som extendar schemat blir kanalnamn
+ * instruktioner ger information till observers ang vad dem ska göra med payload
+ * Skicka med default ifall det inte finns en uppsättning instruktioner för kanalen
+ */
+sealed class ChannelSchema(
+){
+    sealed class Instruction{
+        object Default: Instruction()
+    }
+}
+
+object RouteServiceSchema: ChannelSchema(){
+    object RouteInstructions: Instruction() {
+        object Replace
+    }
+}
+
+
 
 /**
  * @author Jonathan
