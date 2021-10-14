@@ -6,12 +6,11 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 import dat257.gyro.fragments.MapFragment
-import dat257.gyro.fragments.TimerFragment
 import dat257.gyro.services.LocationService
 
 class MainActivity : AppCompatActivity() {
-    lateinit var mapFragment : MapFragment
-    lateinit var timerFragmentFragment : TimerFragment
+
+    private lateinit var mapFragment : MapFragment
     private var hasMapInitialized = false
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -19,11 +18,6 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
         //Setting up timer in code instead
-        timerFragmentFragment = TimerFragment()
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.timerFragment, timerFragmentFragment)
-            commit()
-        }
         /**
          * @author Jonathan
          */

@@ -16,4 +16,8 @@
     <string name="routeLength">routeLength</string>
     <string name="retrieve_settings">retrieve_settings</string>
     <string name="route_len">route_len</string>
+    <string name="time">Time:</string>
+    <string name="distance">Distance:</string>
+    <string name="timerText">00:00:00</string>
+
 </resources>

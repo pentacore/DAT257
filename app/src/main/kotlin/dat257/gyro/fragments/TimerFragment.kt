@@ -80,9 +80,11 @@ class TimerFragment : Fragment()
     {
         serviceIntent.putExtra(TimerService.TIME_EXTRA, time)
         activity?.startService(serviceIntent)
-        view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.text = "stop"
+        //view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.text = "stop"
         //binding.startStopButton.text = "Stop"
         //binding.startStopButton.icon = getDrawable(R.drawable.ic_baseline_pause_24)
+        // HEJ JAG HETER JONATHAN
+        view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.setBackgroundResource(R.drawable.ic_baseline_pause_24)
         //mainActivity.mapFragmentInfo.isRecording=true
         timerStarted = true
     }
@@ -92,7 +94,8 @@ class TimerFragment : Fragment()
     {
        // stopService(serviceIntent)
         activity?.stopService(serviceIntent)
-        view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.text = "start"
+        //view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.text = "start"
+        view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24)
        // binding.startStopButton.text = "Start"
         //binding.startStopButton.icon = getDrawable(R.drawable.ic_baseline_play_arrow_24)
         //mainActivity.mapFragmentInfo.isRecording=false
