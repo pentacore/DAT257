@@ -8,10 +8,12 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils.replace
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.annotation.RequiresApi
 
 import androidx.core.app.ActivityCompat
@@ -33,6 +35,12 @@ import kotlin.collections.ArrayList
 @ExperimentalSerializationApi
 class MapFragment : Fragment() {
     private val requestPermissionRequestCode = 1
+    //walk
+    private lateinit var walkButton: Button
+    private val walkFragment= WalkFragment()
+
+
+
 
     //Map
     private lateinit var map: MapView
@@ -49,6 +57,9 @@ class MapFragment : Fragment() {
     private lateinit var userMarker: Marker
 
     private lateinit var testRoute: Route
+
+
+
 
     /**
      * @author Felix
@@ -113,6 +124,30 @@ class MapFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         map = view.findViewById(R.id.map)
+        walkButton = view.findViewById(R.id.walkButton)
+        walkButton.setBackgroundResource(R.drawable.ic_baseline_directions_walk_24)
+        //instead of in mainActivity's
+        childFragmentManager.beginTransaction().apply{
+            replace(R.id.fcv_walk, walkFragment)
+            hide(walkFragment)
+            commit()
+        }
+        walkButton.setOnClickListener {
+            childFragmentManager.beginTransaction().apply {
+                Log.i("yaay", "snel hest")
+               // walkButton.setBa
+                if(walkFragment.isVisible){
+                    walkButton.setBackgroundResource(R.drawable.ic_baseline_directions_walk_24)
+                    hide(walkFragment)
+                }else{
+                    walkButton.setBackgroundResource(R.drawable.ic_baseline_arrow_upward_24)
+                    show(walkFragment)
+
+                }
+
+                commit()
+            }
+        }
         map.setTileSource(TileSourceFactory.MAPNIK)
         controller = map.controller
         controller.setZoom(15.0)
