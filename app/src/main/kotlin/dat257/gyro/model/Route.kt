@@ -1,4 +1,4 @@
-package model
+package dat257.gyro.model
 
 import android.content.Context
 import dat257.gyro.Jsonable

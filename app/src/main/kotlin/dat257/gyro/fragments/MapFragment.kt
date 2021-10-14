@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 
 import androidx.fragment.app.Fragment
 import dat257.gyro.R
+import dat257.gyro.model.Route
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
 import dat257.gyro.patterns.publisherSubscriber.Subscriber
@@ -196,7 +197,7 @@ class MapFragment : Fragment(), Subscriber {
      **/
     private fun drawRoute(r: Route): Polyline {
         val geoPoints = arrayListOf<GeoPoint>()
-        r.coordinates.forEach { geoPoints.add(it.second) }//.forEach{ r.coordinates[it]?.let { it1 -> geoPoints.add(it1) } }
+        r.coordinates.forEach { geoPoints.add(it.second.toGeoPoint()) }//.forEach{ r.coordinates[it]?.let { it1 -> geoPoints.add(it1) } }
         val line = Polyline()
         line.setPoints(geoPoints)
         map.overlays.add(line)
@@ -209,17 +210,4 @@ class MapFragment : Fragment(), Subscriber {
         onLocationUpdate(message.payload as Location)
     }
 }
-// TODO: 2021-10-03
-// Skapa en generisk drawRoute funktion som tar in en Klass med Settings
-// (med underliggande klass(er) LineSettings)
-// Utöver detta separera funktionen recordRoute (den som användaren spelar in)
-// och drawRoute (den som användaren hämtat "för att följa" (tillkallas separat)
 
-/**
- * @author Erik
- * @author Jonathan
- * @author Felix
- **/
-data class Route(var coordinates: MutableList<Pair<String, GeoPoint>>) {
-
-}

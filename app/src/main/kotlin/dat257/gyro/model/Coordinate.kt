@@ -1,4 +1,4 @@
-package model
+package dat257.gyro.model
 
 import kotlinx.serialization.Serializable
 import org.osmdroid.util.GeoPoint
