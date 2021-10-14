@@ -13,10 +13,12 @@ import androidx.annotation.RequiresApi
 
 import androidx.fragment.app.Fragment
 import dat257.gyro.R
+import dat257.gyro.model.Coordinate
 import dat257.gyro.model.Route
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
 import dat257.gyro.patterns.publisherSubscriber.Subscriber
+import kotlinx.serialization.ExperimentalSerializationApi
 import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
@@ -45,6 +47,7 @@ class MapFragment : Fragment(), Subscriber {
     //Coordinates
     private lateinit var overlay: MyLocationNewOverlay
     private lateinit var location: Location
+    @ExperimentalSerializationApi
     private var recordedRoute = Route(mutableListOf())
 
     /**
@@ -130,6 +133,7 @@ class MapFragment : Fragment(), Subscriber {
      **/
 
     private var isFirstLocationUpdate = true
+    @ExperimentalSerializationApi
     private fun onLocationUpdate(location: Location) {
         if (isFirstLocationUpdate) {
             controller.setCenter(GeoPoint(location))
@@ -167,7 +171,7 @@ class MapFragment : Fragment(), Subscriber {
             recordedRoute.coordinates.add(
                 Pair(
                     simpleDateFormat.format(Date()),
-                    GeoPoint(location)
+                    Coordinate(location)
                 )
             )
         }
@@ -185,6 +189,7 @@ class MapFragment : Fragment(), Subscriber {
     /**
      * @author Erik
      **/
+    @ExperimentalSerializationApi
     private fun drawWalkedRoute() {
         map.overlays.remove(routeLineDrawn)
         routeLineDrawn = drawRoute(recordedRoute)
@@ -195,6 +200,7 @@ class MapFragment : Fragment(), Subscriber {
      * @author Jonathan
      * @author Felix
      **/
+    @ExperimentalSerializationApi
     private fun drawRoute(r: Route): Polyline {
         val geoPoints = arrayListOf<GeoPoint>()
         r.coordinates.forEach { geoPoints.add(it.second.toGeoPoint()) }//.forEach{ r.coordinates[it]?.let { it1 -> geoPoints.add(it1) } }
