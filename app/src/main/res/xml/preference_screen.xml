@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory
+        android:title="Account settings"
+        android:icon="@drawable/person"
+        >
+
+        <EditTextPreference
+            android:key="@string/displayName"
+            app:defaultValue="Kim Doe"
+            app:useSimpleSummaryProvider="true"
+            android:title="Display name" />
+
+<!--        <Preference android:title="@string/Save settings to cloud"  >
+            <intent android:targetClass="dat257.gyro.send/retrieveClass" />
+            </Preference> -->
+
+<!--        <Preference android:title="@string/Fetch cloud settings">
+            <intent android:targetClass="dat257.gyro.sendSettingsClass />
+            </Preference> -->
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Route settings"
+        android:icon="@drawable/ic_menu_compass">
+        <ListPreference
+            android:entries="@array/magnitude_settings"
+            android:entryValues="@array/reply_values"
+            android:key="@string/Measurements"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="metric"
+            android:title="Measurements"/>
+
+        <EditTextPreference
+            android:entryValues="@string/routeLength"
+            android:key="@string/route_len"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="5"
+            android:title="Optimal route length" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

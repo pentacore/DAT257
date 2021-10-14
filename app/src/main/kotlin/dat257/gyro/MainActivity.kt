@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
         //Navigationbar fragments
         val helloWorldFragment = Fragment(R.layout.fragment_hello_world)
         mapFragment = MapFragment()
-        val helloSettingsFragment = Fragment(R.layout.fragment_hello_settings)
+        val helloMapFragment = MapFragment()
+        val helloSettingsFragment = SettingsFragment()
 
         setCurrentFragment(helloWorldFragment)
 
