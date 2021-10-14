@@ -1,32 +1,28 @@
-package dat257.gyro
+package dat257.gyro.fragments
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
-import dat257.gyro.databinding.FragmentFirstBinding
+import dat257.gyro.MainActivity
+import dat257.gyro.R
+import dat257.gyro.services.TimerService
 import kotlin.math.roundToInt
 
-class MainTimer : Fragment()
+class TimerFragment : Fragment()
 {
    // private lateinit var binding:
     private var timerStarted = false
     private lateinit var serviceIntent: Intent
     private var time = 0.0
-
-
+    private lateinit var mainActivity : MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,18 +53,18 @@ class MainTimer : Fragment()
             view.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton).setOnClickListener { startStopTimer()}
             view.findViewById<com.google.android.material.button.MaterialButton>(R.id.resetButton).setOnClickListener { resetTimer() }
 
+            mainActivity = activity as MainActivity
             return view
         }
-
-         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-         }
 
     private fun resetTimer()
     {
         stopTimer()
         time = 0.0
         view?.findViewById<TextView>(R.id.timeTV)?.text = getTimeStringFromDouble(time)
+        //Stops the route recording here. Not the best way to do it.
+        //mainActivity.mapFragmentInfo.shouldStopRecording=true //TODO: Better communication for this.
+
     }
 
     private fun startStopTimer()
@@ -87,6 +83,7 @@ class MainTimer : Fragment()
         view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.text = "stop"
         //binding.startStopButton.text = "Stop"
         //binding.startStopButton.icon = getDrawable(R.drawable.ic_baseline_pause_24)
+        //mainActivity.mapFragmentInfo.isRecording=true
         timerStarted = true
     }
 
@@ -98,6 +95,7 @@ class MainTimer : Fragment()
         view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)?.text = "start"
        // binding.startStopButton.text = "Start"
         //binding.startStopButton.icon = getDrawable(R.drawable.ic_baseline_play_arrow_24)
+        //mainActivity.mapFragmentInfo.isRecording=false
         timerStarted = false
     }
 
