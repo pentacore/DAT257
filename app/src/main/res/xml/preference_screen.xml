@@ -6,7 +6,8 @@
 
     <PreferenceCategory
         android:title="Account settings"
-        android:icon="@drawable/person">
+        android:icon="@drawable/person"
+        >
 
         <EditTextPreference
             android:key="@string/displayName"
@@ -14,9 +15,13 @@
             app:useSimpleSummaryProvider="true"
             android:title="Display name" />
 
-        <Preference android:title="Cloud settings">
-            <intent android:action="android.intent.action.SEND" />
-        </Preference>
+<!--        <Preference android:title="@string/Save settings to cloud"  >
+            <intent android:targetClass="dat257.gyro.send/retrieveClass" />
+            </Preference> -->
+
+<!--        <Preference android:title="@string/Fetch cloud settings">
+            <intent android:targetClass="dat257.gyro.sendSettingsClass />
+            </Preference> -->
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -25,16 +30,16 @@
         <ListPreference
             android:entries="@array/magnitude_settings"
             android:entryValues="@array/reply_values"
-            android:key="list"
+            android:key="@string/Measurements"
             app:useSimpleSummaryProvider="true"
             app:defaultValue="metric"
-            android:title="Measurements"
-            />
+            android:title="Measurements"/>
 
         <EditTextPreference
             android:entryValues="@string/routeLength"
-            android:key="route_len"
-            android:summary="@string/routeLength"
+            android:key="@string/route_len"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="5"
             android:title="Optimal route length" />
 
     </PreferenceCategory>

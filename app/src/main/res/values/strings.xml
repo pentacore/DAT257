@@ -14,4 +14,6 @@
     <string name="title_intent_preference">Intent preference</string>
     <string name="displayName">displayName</string>
     <string name="routeLength">routeLength</string>
+    <string name="retrieve_settings">retrieve_settings</string>
+    <string name="route_len">route_len</string>
 </resources>
