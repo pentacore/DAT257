@@ -44,7 +44,6 @@ class MapFragment : Fragment(), Subscriber {
     //Coordinates
     private lateinit var overlay: MyLocationNewOverlay
     private lateinit var location: Location
-
     private var recordedRoute = Route(mutableListOf())
 
     /**
