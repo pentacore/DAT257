@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.`java-time`.datetime
 object Devices : StringIdTable("hwid", "hwid", 15) {
     val profile = reference("profile_id", Profiles)
     val description = text("description")
-    val model = varchar("model", 50)
+    val model = varchar("dat257.gyro.model", 50)
     val createdAt = datetime("created_at")
     val updatedAt = datetime("updated_at")
 }
