@@ -1,4 +1,4 @@
-package dat257.gyro
+package dat257.gyro.services
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
