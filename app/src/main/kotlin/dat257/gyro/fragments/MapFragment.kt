@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 
 import androidx.fragment.app.Fragment
 import dat257.gyro.R
+import dat257.gyro.WalkFragment
 import dat257.gyro.model.Coordinate
 import dat257.gyro.model.Route
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
@@ -50,6 +51,10 @@ class MapFragment : Fragment(), Subscriber {
     @ExperimentalSerializationApi
     private var recordedRoute = Route(mutableListOf())
 
+    //Walk
+    private lateinit var walkButton: Button
+    private val walkFragment = WalkFragment()
+
     /**
      * @author Felix
      * @author Jonathan
@@ -83,6 +88,30 @@ class MapFragment : Fragment(), Subscriber {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         map = view.findViewById(R.id.view_map)
+        walkButton = view.findViewById(R.id.walkButton)
+        walkButton.setBackgroundResource(R.drawable.ic_baseline_directions_walk_24)
+        //instead of in mainActivity's
+        childFragmentManager.beginTransaction().apply{
+            replace(R.id.fcv_walk, walkFragment)
+            hide(walkFragment)
+            commit()
+        }
+        walkButton.setOnClickListener {
+            childFragmentManager.beginTransaction().apply {
+                Log.i("yaay", "snel hest")
+                // walkButton.setBa
+                if(walkFragment.isVisible){
+                    walkButton.setBackgroundResource(R.drawable.ic_baseline_directions_walk_24)
+                    hide(walkFragment)
+                }else{
+                    walkButton.setBackgroundResource(R.drawable.ic_baseline_arrow_upward_24)
+                    show(walkFragment)
+
+                }
+
+                commit()
+            }
+        }
         map.setTileSource(TileSourceFactory.MAPNIK)
         controller = map.controller
         controller.setZoom(21.0)
