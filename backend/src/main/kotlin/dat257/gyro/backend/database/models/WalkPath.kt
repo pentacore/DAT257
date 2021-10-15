@@ -42,7 +42,7 @@ class WalkPath(id: EntityID<Int>) : IntEntity(id) {
         }
         return SWalkPath(
             //TODO add ratings and fix owner field
-            id.value, name, description, public, sClassification, nodes, null, SProfile(name = profile.name), LocalDateTime.parse(createdAt.toString()), LocalDateTime.parse(updatedAt.toString())
+            id.value, name, description, public, sClassification, nodes, null, null, SProfile(name = profile.name), LocalDateTime.parse(createdAt.toString()), LocalDateTime.parse(updatedAt.toString())
         )
     }
 }

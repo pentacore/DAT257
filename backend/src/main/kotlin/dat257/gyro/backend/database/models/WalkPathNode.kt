@@ -9,7 +9,7 @@ import dat257.gyro.shared.dataTypes.WalkPath as SWalkPath
 
 class WalkPathNode (id: EntityID<Int>) : IntEntity(id) {
     fun toSharedModel(): SWalkPath.Node {
-        return SWalkPath.Node (longitude,latitude,LocalDateTime.parse(createdAt.toString()), LocalDateTime.parse(updatedAt.toString()))
+        return SWalkPath.Node (id.value, null, longitude,latitude,LocalDateTime.parse(createdAt.toString()), LocalDateTime.parse(updatedAt.toString()))
     }
 
     companion object : IntEntityClass<WalkPathNode>(WalkPathNodes)

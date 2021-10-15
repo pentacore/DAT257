@@ -12,7 +12,7 @@ import dat257.gyro.shared.dataTypes.WalkPath as SWalkPath
 class WalkPathClassification(id: EntityID<Int>) : IntEntity(id) {
     fun toSharedModel(): SWalkPath.Classification {
         return SWalkPath.Classification(
-            pathType, areaType, handicapFriendly, strollerFriendly, lighted, LocalDateTime.parse(createdAt.toString()), LocalDateTime.parse(updatedAt.toString())
+            id.value, null, pathType, areaType, handicapFriendly, strollerFriendly, lighted, LocalDateTime.parse(createdAt.toString()), LocalDateTime.parse(updatedAt.toString())
         )
     }
 
