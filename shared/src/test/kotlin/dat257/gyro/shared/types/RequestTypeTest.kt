@@ -13,6 +13,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.http4k.client.JavaHttpClient
 import org.http4k.core.*
+import org.junit.Ignore
 import org.junit.Test
 import java.util.*
 
@@ -21,6 +22,7 @@ class RequestTypeTest {
     var request: WalkPathRequest = WalkPathRequest(WalkPath(), UUID.randomUUID(), "")
 
     @Test
+    @Ignore
     fun testExceptionParsing() {
         val client = mockk<JavaHttpClient>()
         val response: Response = Response(Status.OK).body(Json.encodeToString(ApiError(ApiErrorCode.AlreadyExists, "Nah you cant do that fam")))
