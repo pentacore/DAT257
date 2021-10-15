@@ -14,7 +14,7 @@ import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
 import dat257.gyro.patterns.publisherSubscriber.Publisher
 
-private const val REFRESH_TIME: Long = 10000 // exempel vet inte enhet
+private const val REFRESH_TIME: Long = 5000 // exempel vet inte enhet
 
 /**
  * @author Jonathan
@@ -33,6 +33,8 @@ class LocationService : Service(), Publisher {
     override fun onCreate() {
         super.onCreate()
         createChannel(ChannelName.Location)
+        //This next line is completely in the wrong place - but maybe it works?
+        createChannel(ChannelName.RecordingControl)
         PermissionHandler.location(this)
         locationClient = LocationServices.getFusedLocationProviderClient(this)
         locationClient.lastLocation
