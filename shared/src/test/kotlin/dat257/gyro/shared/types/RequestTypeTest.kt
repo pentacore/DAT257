@@ -13,9 +13,11 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.http4k.client.JavaHttpClient
 import org.http4k.core.*
+import org.junit.Ignore
 import org.junit.Test
 import java.util.*
 
+@Ignore
 class RequestTypeTest {
     @SpyK(recordPrivateCalls = true)
     var request: WalkPathRequest = WalkPathRequest(WalkPath(), UUID.randomUUID(), "")
