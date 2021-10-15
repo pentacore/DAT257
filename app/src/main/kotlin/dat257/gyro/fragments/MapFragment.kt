@@ -13,7 +13,6 @@ import androidx.annotation.RequiresApi
 
 import androidx.fragment.app.Fragment
 import dat257.gyro.R
-import dat257.gyro.WalkFragment
 import dat257.gyro.model.Coordinate
 import dat257.gyro.model.RecordingControllerInstruction
 import dat257.gyro.model.Route
@@ -208,7 +207,7 @@ class MapFragment : Fragment(), Subscriber {
         if (isFollowModeActive)
             map.mapOrientation = 360 - location.bearing
         //Record
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isRecording) {
             recordedRoute.coordinates.add(
                 Pair(
                     simpleDateFormat.format(Date()),
@@ -223,7 +222,6 @@ class MapFragment : Fragment(), Subscriber {
             routeCompleted = true
             //TODO: Save away route AND display the full recorded route until new route is started.
         }
-
         drawWalkedRoute()
     }
 
@@ -256,6 +254,7 @@ class MapFragment : Fragment(), Subscriber {
         when (source) {
             ChannelName.Location -> onLocationUpdate(message.payload as Location)
             ChannelName.RecordingControl -> onRecordingControlUpdate(message.payload as RecordingControllerInstruction)
+            else -> Log.e("MapFragment/onUpdate: ", "Unimplemented Channelsource")
         }
     }
 
