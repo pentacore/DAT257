@@ -14,7 +14,7 @@ import java.util.*
 abstract class RequestType<DataType : TransferType>(private val profileUUID: UUID, private val apiToken:String) {
     protected abstract val endpointUrl: String
     protected abstract val data: DataType
-    protected val client: HttpHandler = JavaHttpClient()
+    val client: HttpHandler = JavaHttpClient()
 
     protected fun send(request:Request): Response {
         request.header(ApiHelper.API_TOKEN_HEADER, apiToken)
