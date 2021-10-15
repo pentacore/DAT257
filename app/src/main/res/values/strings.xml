@@ -7,4 +7,17 @@
     <string name="hello_settings">Hello settings!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_edittext_preference">eddittext</string>
+    <string name="summary_edittext_preference">edittextDef</string>
+    <string name="dialog_title_edittext_preference">errorDialog</string>
+    <string name="dialog_title_list_preference">You should enter something</string>
+    <string name="title_intent_preference">Intent preference</string>
+    <string name="displayName">displayName</string>
+    <string name="routeLength">routeLength</string>
+    <string name="retrieve_settings">retrieve_settings</string>
+    <string name="route_len">route_len</string>
+    <string name="time">Time:</string>
+    <string name="distance">Distance:</string>
+    <string name="timerText">00:00:00</string>
+
 </resources>
