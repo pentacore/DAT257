@@ -13,8 +13,8 @@ import androidx.annotation.RequiresApi
 
 import androidx.fragment.app.Fragment
 import dat257.gyro.R
-import dat257.gyro.WalkFragment
 import dat257.gyro.model.Coordinate
+import dat257.gyro.model.RecordingControllerInstruction
 import dat257.gyro.model.Route
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
@@ -24,6 +24,7 @@ import org.osmdroid.api.IMapController
 
 import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.Distance
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Polyline
@@ -48,12 +49,19 @@ class MapFragment : Fragment(), Subscriber {
     //Coordinates
     private lateinit var overlay: MyLocationNewOverlay
     private lateinit var location: Location
+
     @ExperimentalSerializationApi
     private var recordedRoute = Route(mutableListOf())
 
     //Walk
     private lateinit var walkButton: Button
     private val walkFragment = WalkFragment()
+
+    //Recording Booleans(Controlled via RecordingController Channel)
+    private var isRecording = false
+    private var shouldStopRecording = false
+    private var routeCompleted = false
+    private val distanceThresholdToBreakRecording = 2E-7
 
     /**
      * @author Felix
@@ -78,6 +86,8 @@ class MapFragment : Fragment(), Subscriber {
         // note, the load method also sets the HTTP User Agent to your application's package name; abusing the osm
         // tile servers will get you banned based on this string.
         subscribe(ChannelName.Location)
+        subscribe(ChannelName.RecordingControl)
+
     }
 
     override fun onCreateView(
@@ -91,7 +101,7 @@ class MapFragment : Fragment(), Subscriber {
         walkButton = view.findViewById(R.id.walkButton)
         walkButton.setBackgroundResource(R.drawable.ic_baseline_directions_walk_24)
         //instead of in mainActivity's
-        childFragmentManager.beginTransaction().apply{
+        childFragmentManager.beginTransaction().apply {
             replace(R.id.fcv_walk, walkFragment)
             hide(walkFragment)
             commit()
@@ -100,10 +110,10 @@ class MapFragment : Fragment(), Subscriber {
             childFragmentManager.beginTransaction().apply {
                 Log.i("yaay", "snel hest")
                 // walkButton.setBa
-                if(walkFragment.isVisible){
+                if (walkFragment.isVisible) {
                     walkButton.setBackgroundResource(R.drawable.ic_baseline_directions_walk_24)
                     hide(walkFragment)
-                }else{
+                } else {
                     walkButton.setBackgroundResource(R.drawable.ic_baseline_arrow_upward_24)
                     show(walkFragment)
 
@@ -162,6 +172,7 @@ class MapFragment : Fragment(), Subscriber {
      **/
 
     private var isFirstLocationUpdate = true
+
     @ExperimentalSerializationApi
     private fun onLocationUpdate(location: Location) {
         if (isFirstLocationUpdate) {
@@ -172,31 +183,31 @@ class MapFragment : Fragment(), Subscriber {
         //Not well written. This check is not optimal.
         // It's better if MainTimer could call functions from here and we were saving routes appropriately.
         // It will mimic appropriate behaviour for now.
-        /*
-        if (routeCompleted && mapFragmentInfo.isRecording) {
-            mapFragmentInfo.recordedRoute = Route(mutableListOf())
+
+        if (routeCompleted && isRecording) {
+            recordedRoute = Route(mutableListOf())
             routeCompleted = false
         }
         //check if previous location is too far away to record.
-        if (mapFragmentInfo.recordedRoute.coordinates.size > 0) {
+        if (recordedRoute.coordinates.size > 0) {
             val distanceFromPreviousRecordedPointSquared = Distance.getSquaredDistanceToPoint(
                 location.latitude,
                 location.longitude,
-                mapFragmentInfo.recordedRoute.coordinates.last().second.latitude,
-                mapFragmentInfo.recordedRoute.coordinates.last().second.longitude
+                recordedRoute.coordinates.last().second.latitude,
+                recordedRoute.coordinates.last().second.longitude
             )
-            if (distanceFromPreviousRecordedPointSquared > distanceThresholdToBreakRecording && mapFragmentInfo.isRecording) {
+            if (distanceFromPreviousRecordedPointSquared > distanceThresholdToBreakRecording && isRecording) {
                 //TODO: Save away route
-                mapFragmentInfo.recordedRoute = Route(mutableListOf())
+                recordedRoute = Route(mutableListOf())
             }
         }
-        */
+
         this.location = location
         //FollowMode
         if (isFollowModeActive)
             map.mapOrientation = 360 - location.bearing
         //Record
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isRecording) {
             recordedRoute.coordinates.add(
                 Pair(
                     simpleDateFormat.format(Date()),
@@ -204,14 +215,13 @@ class MapFragment : Fragment(), Subscriber {
                 )
             )
         }
-        /*
-        if (mapFragmentInfo.shouldStopRecording) {
-            mapFragmentInfo.isRecording = false
-            mapFragmentInfo.shouldStopRecording = false
+
+        if (shouldStopRecording) {
+            isRecording = false
+            shouldStopRecording = false
             routeCompleted = true
             //TODO: Save away route AND display the full recorded route until new route is started.
         }
-        */
         drawWalkedRoute()
     }
 
@@ -241,8 +251,22 @@ class MapFragment : Fragment(), Subscriber {
     }
 
     override fun onUpdate(source: ChannelName, message: Message<*>) {
-        Log.i("In Mapfragment: ", "onUpdate")
-        onLocationUpdate(message.payload as Location)
+        when (source) {
+            ChannelName.Location -> onLocationUpdate(message.payload as Location)
+            ChannelName.RecordingControl -> onRecordingControlUpdate(message.payload as RecordingControllerInstruction)
+            else -> Log.e("MapFragment/onUpdate: ", "Unimplemented Channelsource")
+        }
+    }
+
+    /**
+     * @author Erik
+     */
+    fun onRecordingControlUpdate(instruction: RecordingControllerInstruction) {
+        when (instruction) {
+            RecordingControllerInstruction.Pause -> isRecording = false
+            RecordingControllerInstruction.Play -> isRecording = true
+            RecordingControllerInstruction.Stop -> shouldStopRecording = true
+        }
     }
 }
 
