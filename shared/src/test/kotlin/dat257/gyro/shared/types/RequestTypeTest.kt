@@ -26,7 +26,6 @@ class RequestTypeTest {
     fun testExceptionParsing() {
         val client = mockk<JavaHttpClient>()
         val response: Response = Response(Status.OK).body(Json.encodeToString(ApiError(ApiErrorCode.AlreadyExists, "Nah you cant do that fam")))
-        every { request.client(any()) } returns response
         request.get()
     }
 }
