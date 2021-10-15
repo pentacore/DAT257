@@ -12,10 +12,12 @@ import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import java.util.*
 import kotlin.test.assertEquals
 
+@Ignore
 class WalkPathRequestTest {
     @SpyK(recordPrivateCalls = true)
     var request: WalkPathRequest = WalkPathRequest(WalkPath(), UUID.randomUUID(), "")
