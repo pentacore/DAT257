@@ -1,6 +1,4 @@
 package dat257.gyro
-
-
 import android.util.Log
 
 /**
