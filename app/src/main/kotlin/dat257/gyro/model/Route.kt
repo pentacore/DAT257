@@ -1,7 +1,7 @@
 package dat257.gyro.model
 
 import android.content.Context
-import dat257.gyro.Jsonable
+import dat257.gyro.utils.Jsonable
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

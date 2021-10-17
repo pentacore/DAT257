@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
+import dagger.hilt.android.AndroidEntryPoint
 import dat257.gyro.fragments.MapFragment
+import dat257.gyro.fragments.SettingsFragment
 import dat257.gyro.services.LocationService
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mapFragment : MapFragment

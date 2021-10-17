@@ -1,11 +1,11 @@
-package dat257.gyro
+package dat257.gyro.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import dat257.gyro.R
 
 
 class SettingsFragment : PreferenceFragmentCompat() {

@@ -1,4 +1,4 @@
-package dat257.gyro
+package dat257.gyro.utils
 
 import android.content.Context
 

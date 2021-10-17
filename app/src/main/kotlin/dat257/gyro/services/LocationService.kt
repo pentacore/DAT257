@@ -4,12 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.location.Location
-import android.location.LocationListener
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.*
-import dat257.gyro.PermissionHandler
+import dat257.gyro.utils.PermissionHandler
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
 import dat257.gyro.patterns.publisherSubscriber.Publisher
