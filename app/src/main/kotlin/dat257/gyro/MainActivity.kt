@@ -15,7 +15,7 @@ import dat257.gyro.viewmodel.RouteViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val mainViewModel by viewModels<RouteViewModel>()
+    private val routeViewModel by viewModels<RouteViewModel>()
     private lateinit var _binding : ActivityMainBinding
 
     private lateinit var mapFragment : MapFragment
@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         _binding = ActivityMainBinding.inflate(layoutInflater)
 
         /**
