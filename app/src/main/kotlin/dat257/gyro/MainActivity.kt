@@ -3,24 +3,29 @@ package dat257.gyro
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
+import dat257.gyro.databinding.ActivityMainBinding
 import dat257.gyro.fragments.MapFragment
 import dat257.gyro.fragments.SettingsFragment
 import dat257.gyro.services.LocationService
+import dat257.gyro.viewmodel.RouteViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private val mainViewModel by viewModels<RouteViewModel>()
+    private lateinit var _binding : ActivityMainBinding
 
     private lateinit var mapFragment : MapFragment
     private var hasMapInitialized = false
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
-        //Setting up timer in code instead
+
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+
         /**
          * @author Jonathan
          */
@@ -35,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         val helloSettingsFragment = SettingsFragment()
 
         setCurrentFragment(helloWorldFragment)
-
 
         findViewById<NavigationBarView>(R.id.bottomNavigation).setOnItemSelectedListener {
             when (it.itemId) {

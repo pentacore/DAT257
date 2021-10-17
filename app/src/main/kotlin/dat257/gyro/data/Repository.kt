@@ -2,9 +2,11 @@ package dat257.gyro.data
 
 import android.graphics.Bitmap
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dat257.gyro.data.remote.HttpResponse
 import dat257.gyro.data.remote.RemoteDataSource
 import dat257.gyro.model.RouteService
 import dat257.gyro.model.BaseApiResponse
+import dat257.gyro.model.Route
 import dat257.gyro.utils.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -20,11 +22,15 @@ class Repository @Inject constructor(
     private val remoteDataSource: RemoteDataSource
 ) : BaseApiResponse() {
 
-    suspend fun getDog(): Flow<NetworkResult<RouteService>> {
-        return flow<NetworkResult<RouteService>> {
+    suspend fun getRoute(): Flow<NetworkResult<Route>> =
+        flow<NetworkResult<Route>> {
             emit(safeApiCall { remoteDataSource.getRoute() })
         }.flowOn(Dispatchers.IO)
-    }
+
+    suspend fun putRoute(route: Route): Flow<NetworkResult<HttpResponse>> =
+        flow<NetworkResult<HttpResponse>> {
+            emit(safeApiCall { remoteDataSource.putRoute(route) })
+        }.flowOn(Dispatchers.IO)
 
     fun saveImage(image: Bitmap, storageDir: File, imageFileName: String): Flow<Boolean> {
 

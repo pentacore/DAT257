@@ -27,11 +27,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideConverterFactory(): GsonConverterFactory =
-        GsonConverterFactory.create()
-
-    @Singleton
-    @Provides
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
@@ -47,5 +42,4 @@ object NetworkModule {
     @Provides
     fun provideCurrencyService(retrofit: Retrofit): RouteService =
         retrofit.create(RouteService::class.java)
-
 }

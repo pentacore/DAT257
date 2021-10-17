@@ -9,4 +9,5 @@ class RemoteDataSource @Inject constructor(
 ) {
     suspend fun getRoute() = routeService.getRoute()
     suspend fun putRoute(route: Route) = routeService.putRoute(route)
+    suspend fun deleteRoute(route: Route) = routeService.deleteRoute(route)
 }
