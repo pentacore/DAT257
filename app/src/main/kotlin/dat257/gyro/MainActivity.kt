@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         setCurrentFragment(helloWorldFragment)
-
+    
         findViewById<NavigationBarView>(R.id.bottomNavigation).setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.item_home -> setCurrentFragment(helloWorldFragment)

@@ -31,13 +31,11 @@ class RouteViewModel @Inject constructor
 
     val getRouteResponse: MutableLiveData<NetworkResult<Route>> = _getRouteResponse
 
-
     fun fetchRoute() = viewModelScope.launch {
         repository.getRoute().collect { value ->
             _getRouteResponse.value = value
         }
     }
-
 
     fun saveRoute() = viewModelScope.launch {
         repository.getRoute().collect { value ->
