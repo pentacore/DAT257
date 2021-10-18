@@ -37,8 +37,8 @@ abstract class RoomStorage : RoomDatabase() {
         /**
          * Implement fetch mechanics later
          */
-        suspend fun fetchOrStandard(settingsDao: SettingsDao) =
-            settingsDao.insertSetting(
+        suspend fun fetchOrStandard(settingsDao: SettingsDao) = with(settingsDao) {
+            insertSetting(
                 UserSettings(
                     userName = "Kim Doe",
                     velocityMeasurement = "PACE",
@@ -47,6 +47,23 @@ abstract class RoomStorage : RoomDatabase() {
                     lengthUnit = "KILOMETER"
                 )
             )
+
+            insertSystemsOfMeasure(
+                "METRIC",
+                "IMPERIAL"
+            )
+
+            insertVelocitySystem(
+                "PACE",
+                "SPEED"
+            )
+
+            insertUnitsOfMeasurement(
+                "METER",
+                "KILOMETERS",
+                "MILES"
+            )
+        }
     }
 
     companion object {

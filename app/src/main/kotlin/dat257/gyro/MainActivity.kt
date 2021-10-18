@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
             ) // Fråga mig inte ens , läs på om intents, dem verkar coola osv
         )
 
-
         setCurrentFragment(helloWorldFragment)
 
         findViewById<NavigationBarView>(R.id.bottomNavigation).setOnItemSelectedListener {

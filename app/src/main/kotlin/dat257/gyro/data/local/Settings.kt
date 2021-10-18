@@ -1,7 +1,9 @@
 package dat257.gyro.data.local
 
-import androidx.room.*
-import dat257.gyro.model.VelocityMeasurement
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
 /**
  * Jonathan
@@ -24,28 +26,8 @@ data class UserSettings(
 )
 
 @Entity(indices = [Index(value = ["name"], unique = true)])
-data class SystemOfMeasurement(
-    @PrimaryKey val name: String
-)
-
+data class SystemOfMeasurement(@PrimaryKey val name: String)
 @Entity(indices = [Index(value = ["name"], unique = true)])
-data class UnitOfMeasure(
-    @PrimaryKey val name: String
-)
-
+data class UnitOfMeasure(@PrimaryKey val name: String)
 @Entity(indices = [Index(value = ["name"], unique = true)])
-data class VelocitySystem(
-    @PrimaryKey val name: String
-)
-
-val unitsOfMeasurement = listOf<String>(
-    "METER",
-    "KILOMETER",
-    "MILE",
-    "FEET"
-)
-
-val systemsOfMeasurement = listOf<String>(
-    "METRIC",
-    "IMPERIAL"
-)
+data class VelocitySystem(@PrimaryKey val name: String)
