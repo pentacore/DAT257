@@ -4,6 +4,7 @@ plugins {
     id ("kotlin-android-extensions")
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
+    kotlin("plugin.serialization") version "1.5.31"
 }
 
 apply(plugin= "kotlin-kapt")
@@ -44,6 +45,8 @@ android {
 }
 
 dependencies {
+    implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation("com.google.android.gms:play-services-location:18.0.0")
     val kotlinVersion = "1.5.31"
     val coroutinesVersion = "1.4.3"
     val retrofitVersion = "2.9.0"
@@ -60,7 +63,7 @@ dependencies {
     implementation ("androidx.room:room-runtime:$roomVersion")
     annotationProcessor ("androidx.room:room-compiler:$roomVersion")
     androidTestImplementation ("androidx.room:room-testing:$roomVersion")
-// optional - Guava support for Room, including Optional and ListenableFuture
+    // optional - Guava support for Room, including Optional and ListenableFuture
     implementation ("androidx.room:room-guava:$roomVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
@@ -107,6 +110,14 @@ dependencies {
 
     //for image rendering
     implementation ("io.coil-kt:coil:$coilVersion")
+
+    //osmdroid
+    implementation("org.osmdroid:osmdroid-android:6.1.11")
+
+    //kotlinx serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+
 }
 
 /* old config

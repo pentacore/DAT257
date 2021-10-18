@@ -12,9 +12,7 @@
 
         <EditTextPreference
             android:key="@string/displayName"
-            app:defaultValue="Kim Doe"
-            app:useSimpleSummaryProvider="true"
-            android:title="Display name" />
+            android:title="@string/displayName_text" />
 
 <!--        <Preference android:title="@string/Save settings to cloud"  >
             <intent android:targetClass="dat257.gyro.send/retrieveClass" />
@@ -32,15 +30,11 @@
             android:entries="@array/magnitude_settings"
             android:entryValues="@array/reply_values"
             android:key="@string/Measurements"
-            app:useSimpleSummaryProvider="true"
-            app:defaultValue="metric"
             android:title="Measurements"/>
 
         <EditTextPreference
             android:entryValues="@string/routeLength"
             android:key="@string/route_len"
-            app:useSimpleSummaryProvider="true"
-            app:defaultValue="5"
             android:title="Optimal route length" />
 
     </PreferenceCategory>

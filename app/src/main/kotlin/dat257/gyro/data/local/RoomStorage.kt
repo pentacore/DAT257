@@ -9,7 +9,6 @@ import dat257.gyro.data.local.dao.SettingsDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@
 @Database(
     entities = [
         UserSettings::class,
@@ -22,7 +21,6 @@ abstract class RoomStorage : RoomDatabase() {
     abstract fun settingsDao(): SettingsDao
 
     private class RoomStorageCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
-
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             INSTANCE?.let { dataBase ->
@@ -47,10 +45,9 @@ abstract class RoomStorage : RoomDatabase() {
                     systemOfMeasurement = "METRIC",
                     preferredLength = 5,
                     lengthUnit = "KILOMETER"
-                    )
+                )
             )
     }
-
 
     companion object {
         @Volatile

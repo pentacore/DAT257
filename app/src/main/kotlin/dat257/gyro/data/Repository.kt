@@ -2,9 +2,9 @@ package dat257.gyro.data
 
 import android.graphics.Bitmap
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dat257.gyro.data.local.dao.SettingsDao
 import dat257.gyro.data.remote.HttpResponse
 import dat257.gyro.data.remote.RemoteDataSource
-import dat257.gyro.model.RouteService
 import dat257.gyro.model.BaseApiResponse
 import dat257.gyro.model.Route
 import dat257.gyro.utils.NetworkResult
@@ -19,7 +19,8 @@ import javax.inject.Inject
 
 @ActivityRetainedScoped
 class Repository @Inject constructor(
-    private val remoteDataSource: RemoteDataSource
+    private val remoteDataSource: RemoteDataSource,
+    //private val dao: SettingsDao
 ) : BaseApiResponse() {
 
     suspend fun getRoute(): Flow<NetworkResult<Route>> =

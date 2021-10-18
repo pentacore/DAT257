@@ -8,6 +8,7 @@ import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
 import dat257.gyro.utils.PermissionHandler
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message

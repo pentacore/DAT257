@@ -1,6 +1,7 @@
 package dat257.gyro.data.local.dao
 
 import androidx.room.*
+import dagger.Provides
 import dat257.gyro.data.local.UserSettings
 
 @Dao
