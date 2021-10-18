@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import dagger.Provides
 import dat257.gyro.data.local.dao.SettingsDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
     ],
     version = 1
 )
-abstract class RoomStorage : RoomDatabase() {
+
+abstract class AbstractDb : RoomDatabase() {
     abstract fun settingsDao(): SettingsDao
 
     private class RoomStorageCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
@@ -55,16 +57,16 @@ abstract class RoomStorage : RoomDatabase() {
 
     companion object {
         @Volatile
-        private var INSTANCE: RoomStorage? = null
+        private var INSTANCE: AbstractDb? = null
 
         fun getDatabase(
             context: Context,
             scope: CoroutineScope
-        ): RoomStorage {
+        ): AbstractDb {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context,
-                    RoomStorage::class.java,
+                    AbstractDb::class.java,
                     "local-storage"
                 ).addCallback(RoomStorageCallback(scope)).build()
                 INSTANCE = instance

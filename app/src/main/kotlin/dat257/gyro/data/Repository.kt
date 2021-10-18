@@ -1,8 +1,8 @@
 package dat257.gyro.data
 
-import android.graphics.Bitmap
 import dagger.hilt.android.scopes.ActivityRetainedScoped
-import dat257.gyro.data.local.dao.SettingsDao
+import dat257.gyro.data.local.AbstractDb
+import dat257.gyro.data.local.UserSettings
 import dat257.gyro.data.remote.HttpResponse
 import dat257.gyro.data.remote.RemoteDataSource
 import dat257.gyro.model.BaseApiResponse
@@ -12,15 +12,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import kotlinx.serialization.ExperimentalSerializationApi
 import javax.inject.Inject
 
+@ExperimentalSerializationApi
 @ActivityRetainedScoped
 class Repository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    //private val dao: SettingsDao
+    private val database: AbstractDb
 ) : BaseApiResponse() {
 
     suspend fun getRoute(): Flow<NetworkResult<Route>> =
@@ -33,32 +32,21 @@ class Repository @Inject constructor(
             emit(safeApiCall { remoteDataSource.putRoute(route) })
         }.flowOn(Dispatchers.IO)
 
-    fun saveImage(image: Bitmap, storageDir: File, imageFileName: String): Flow<Boolean> {
+    suspend fun getSettings(): Flow<UserSettings> = flow {
+        emit(
+            database.settingsDao().getSettings()[0]
+        )
+    }.flowOn(Dispatchers.IO)
 
-        val successDirCreated = if (!storageDir.exists()) {
-            storageDir.mkdir()
-        } else {
-            true
-        }
+    suspend fun updateSettings(settings: UserSettings): Flow<Unit> = flow {
+        emit(
+            database.settingsDao().updateSetting(settings)
+        )
+    }.flowOn(Dispatchers.IO)
 
-        if (successDirCreated) {
-            val imageFile = File(storageDir, imageFileName)
-            return try {
-                val fOut: OutputStream = FileOutputStream(imageFile)
-                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
-                fOut.close()
-                flow {
-                    emit(true)
-                }.flowOn(Dispatchers.IO)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                flow {
-                    emit(false)
-                }.flowOn(Dispatchers.IO)
-            }
-        } else {
-            return flow { emit(false) }.flowOn(Dispatchers.IO)
-        }
+    suspend fun getSetting(setting: String): Flow<List<String>> = flow {
+        emit(
+            database.settingsDao().getSetting(setting)
+        )
     }
-
 }

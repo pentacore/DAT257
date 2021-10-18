@@ -12,10 +12,7 @@ interface SettingsDao {
     suspend fun getSettings(): List<UserSettings>
 
     @Query("SELECT (:setting) FROM UserSettings")
-    suspend fun gsSetting(setting: String): List<String>
-
-    @Delete
-    suspend fun removeSettings(settings: UserSettings)
+    suspend fun getSetting(setting: String): List<String>
 
     @Update
     suspend fun updateSetting(setting: UserSettings)

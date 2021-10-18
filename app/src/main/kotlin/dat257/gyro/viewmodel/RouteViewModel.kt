@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.ExperimentalSerializationApi
 import javax.inject.Inject
 
+@ExperimentalSerializationApi
 @HiltViewModel
 class RouteViewModel @Inject constructor
     (
@@ -27,17 +28,17 @@ class RouteViewModel @Inject constructor
     val putRouteResponse: LiveData<NetworkResult<HttpResponse>> = _putRouteResponse
 
     private val _getRouteResponse: MutableLiveData<NetworkResult<Route>> = MutableLiveData()
-    @ExperimentalSerializationApi
+
     val getRouteResponse: MutableLiveData<NetworkResult<Route>> = _getRouteResponse
 
-    @ExperimentalSerializationApi
+
     fun fetchRoute() = viewModelScope.launch {
         repository.getRoute().collect { value ->
             _getRouteResponse.value = value
         }
     }
 
-    @ExperimentalSerializationApi
+
     fun saveRoute() = viewModelScope.launch {
         repository.getRoute().collect { value ->
             _getRouteResponse.value = value
