@@ -1,9 +1,6 @@
 package dat257.gyro.data.local
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 /**
  * Jonathan
@@ -11,17 +8,35 @@ import androidx.room.PrimaryKey
  * det får komma i framtiden,
  * vill mest ha persistence just nu
  */
-@Entity
+const val velocity_measurement = "velocity_measurement"
+const val system_of_measurement = "system_of_measurement"
+const val units_of_measurement = "units_of_measurement"
+@Entity(foreignKeys = [
+    ForeignKey(
+        entity = SystemOfMeasurement::class,
+        childColumns = arrayOf(system_of_measurement),
+        parentColumns = arrayOf("name")
+    ),
+    ForeignKey(
+        entity = UnitOfMeasure::class,
+        childColumns = arrayOf(units_of_measurement),
+        parentColumns = arrayOf("name")
+    ),
+    ForeignKey(
+        entity = VelocitySystem::class,
+        childColumns = arrayOf(velocity_measurement),
+        parentColumns = arrayOf("name")
+    )],
+)
 data class UserSettings(
-    @PrimaryKey
+    @PrimaryKey @ColumnInfo(name = "user_name")
     val userName: String,
-    @ColumnInfo(name = "velocity_measurement")
+    @ColumnInfo(name = velocity_measurement)
     val velocityMeasurement: String,
-    @ColumnInfo(name = "system_of_measurement")
+    @ColumnInfo(name = system_of_measurement)
     val systemOfMeasurement: String,
-    @ColumnInfo(name = "preferred_length")
     val preferredLength: Int,
-    @ColumnInfo(name = "length_unit")
+    @ColumnInfo(name = units_of_measurement)
     val lengthUnit: String
 )
 
