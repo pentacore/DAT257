@@ -11,18 +11,19 @@ allprojects {
 }
 
 buildscript {
-
     val kotlinVersion = "1.5.31"
-    val daggerHiltVersion = "2.28-alpha"
+    val daggerHiltVersion = "2.38.1"
     repositories {
         google()
         gradlePluginPortal()
         mavenCentral()
+
     }
     dependencies {
         classpath( "com.android.tools.build:gradle:7.0.3")
         classpath( "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.google.dagger:hilt-android-gradle-plugin:$daggerHiltVersion")
+
     }
 }
 

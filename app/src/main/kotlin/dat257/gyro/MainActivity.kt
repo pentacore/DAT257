@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.item_home -> setCurrentFragment(helloWorldFragment)
                 R.id.item_map -> activateMapFragment(mapFragment)
-                R.id.item_settings -> setCurrentFragment(helloSettingsFragment)
+               // R.id.item_settings -> setCurrentFragment(helloSettingsFragment)
             }
             true
         }
