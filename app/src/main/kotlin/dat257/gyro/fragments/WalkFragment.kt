@@ -12,15 +12,16 @@ import dat257.gyro.model.RecordingControllerInstruction
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
 import dat257.gyro.patterns.publisherSubscriber.Publisher
+import dat257.gyro.patterns.publisherSubscriber.Subscriber
 
-class WalkFragment : Fragment(), Publisher {
+class WalkFragment : Fragment(), Publisher, Subscriber{
     //The channel that this publishes to is currently being made in LocationService. This should
     //Probably change to be a central channel creator - or by changing the pattern.
   //  private lateinit var walkMinimize: Button
     private lateinit var walkPlay: Button
     private lateinit var walkReset: Button
     private var isStarted  = false
-
+    private var distanceOfRoute = 0.0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,7 +33,7 @@ class WalkFragment : Fragment(), Publisher {
         walkPlay.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24)
         walkReset = view.findViewById(R.id.resetButton)
         walkReset.setBackgroundResource(R.drawable.ic_baseline_refresh_24)
-
+        subscribe(ChannelName.Distance)
         walkPlay.setOnClickListener {
             childFragmentManager.beginTransaction().apply {
                 Log.i("yaay", "snel hest")
@@ -56,8 +57,13 @@ class WalkFragment : Fragment(), Publisher {
 
     }
 
-
-
+    override fun onUpdate(source: ChannelName, message: Message<*>) {
+        Log.i("In Walkfragmentupdate:", message.payload.toString())
+        updateDistanceString()
+    }
+    fun updateDistanceString(){
+        //TODO: updateDistanceString
+    }
 
 
 }

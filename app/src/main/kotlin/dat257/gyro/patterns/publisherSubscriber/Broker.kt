@@ -8,7 +8,8 @@ import dat257.gyro.BrokerActionException
 enum class ChannelName {
     Timer,
     Location,
-    RecordingControl
+    RecordingControl,
+    Distance
 }
 
 /**

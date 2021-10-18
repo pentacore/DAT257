@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 import dat257.gyro.fragments.MapFragment
+import dat257.gyro.model.ChannelCreator
 import dat257.gyro.services.LocationService
 
 class MainActivity : AppCompatActivity() {
@@ -13,10 +14,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mapFragment : MapFragment
     private var hasMapInitialized = false
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        ChannelCreator()
         //Setting up timer in code instead
         /**
          * @author Jonathan

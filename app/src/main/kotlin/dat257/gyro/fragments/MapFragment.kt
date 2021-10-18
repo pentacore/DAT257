@@ -18,6 +18,7 @@ import dat257.gyro.model.RecordingControllerInstruction
 import dat257.gyro.model.Route
 import dat257.gyro.patterns.publisherSubscriber.ChannelName
 import dat257.gyro.patterns.publisherSubscriber.Message
+import dat257.gyro.patterns.publisherSubscriber.Publisher
 import dat257.gyro.patterns.publisherSubscriber.Subscriber
 import kotlinx.serialization.ExperimentalSerializationApi
 import org.osmdroid.api.IMapController
@@ -31,7 +32,7 @@ import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.util.*
 
-class MapFragment : Fragment(), Subscriber {
+class MapFragment : Fragment(), Subscriber, Publisher {
 
     //Map
     private lateinit var map: MapView
@@ -186,6 +187,7 @@ class MapFragment : Fragment(), Subscriber {
 
         if (routeCompleted && isRecording) {
             recordedRoute = Route(mutableListOf())
+            publish(ChannelName.Distance, Message(recordedRoute.getDistance()))
             routeCompleted = false
         }
         //check if previous location is too far away to record.
@@ -213,7 +215,9 @@ class MapFragment : Fragment(), Subscriber {
                     simpleDateFormat.format(Date()),
                     Coordinate(location)
                 )
+
             )
+            publish(ChannelName.Distance, Message(recordedRoute.getDistance()))
         }
 
         if (shouldStopRecording) {
