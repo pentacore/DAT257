@@ -11,9 +11,15 @@ import dat257.gyro.services.LocationService
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mapFragment : MapFragment
+    private lateinit var mapFragment: MapFragment
     private var hasMapInitialized = false
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //Navigationbar fragments
+        val helloWorldFragment = Fragment(R.layout.fragment_hello_world)
+        mapFragment = MapFragment()
+        val helloSettingsFragment = SettingsFragment()
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
@@ -23,14 +29,12 @@ class MainActivity : AppCompatActivity() {
          * @author Jonathan
          */
         startService(
-            Intent(this, LocationService().javaClass) // Fråga mig inte ens , läs på om intents, dem verkar coola osv
+            Intent(
+                this,
+                LocationService().javaClass
+            ) // Fråga mig inte ens , läs på om intents, dem verkar coola osv
         )
 
-        //Navigationbar fragments
-        val helloWorldFragment = Fragment(R.layout.fragment_hello_world)
-        mapFragment = MapFragment()
-        val helloMapFragment = MapFragment()
-        val helloSettingsFragment = SettingsFragment()
 
         setCurrentFragment(helloWorldFragment)
 
@@ -54,16 +58,25 @@ class MainActivity : AppCompatActivity() {
             }
             //supportFragmentManager.executePendingTransactions() //FragmentInfo can only be accessed after it has been initialized
         }
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fcv_main, Fragment()) //Replaces the main view with an empty fragment
-                commit()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fcv_main, Fragment()) //Replaces the main view with an empty fragment
+            commit()
         }
     }
 
     private fun setCurrentFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fcv_main, fragment)
-            commit()
+        //it is not nice but it gets the job done
+        if (fragment != mapFragment) {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fcv_main, fragment).remove(mapFragment)
+                commit()
+            }
+        } else {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fcv_main, fragment)
+                commit()
+            }
+
         }
     }
 }
