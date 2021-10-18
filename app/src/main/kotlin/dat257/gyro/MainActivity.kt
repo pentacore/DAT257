@@ -42,12 +42,12 @@ class MainActivity : AppCompatActivity() {
         )
 
         setCurrentFragment(helloWorldFragment)
-    
+
         findViewById<NavigationBarView>(R.id.bottomNavigation).setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.item_home -> setCurrentFragment(helloWorldFragment)
                 R.id.item_map -> activateMapFragment(mapFragment)
-               // R.id.item_settings -> setCurrentFragment(helloSettingsFragment)
+                R.id.item_settings -> setCurrentFragment(helloSettingsFragment)
             }
             true
         }
