@@ -253,7 +253,9 @@ class MapFragment : Fragment(), Subscriber, Publisher {
         geoPoints.clear()
         return line
     }
-
+    /**
+     * @author Erik
+     */
     override fun onUpdate(source: ChannelName, message: Message<*>) {
         when (source) {
             ChannelName.Location -> onLocationUpdate(message.payload as Location)
