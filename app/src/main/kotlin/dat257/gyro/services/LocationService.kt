@@ -32,9 +32,6 @@ class LocationService : Service(), Publisher {
     @SuppressLint("MissingPermission")
     override fun onCreate() {
         super.onCreate()
-        createChannel(ChannelName.Location)
-        //This next line is completely in the wrong place - but maybe it works?
-        createChannel(ChannelName.RecordingControl)
         PermissionHandler.location(this)
         locationClient = LocationServices.getFusedLocationProviderClient(this)
         locationClient.lastLocation
