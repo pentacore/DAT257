@@ -64,7 +64,7 @@ data class Route(var coordinates: MutableList<Pair<String, Coordinate>>): Jsonab
                 * cos(deg2rad(theta)))
         dist = acos(dist)
         dist = rad2deg(dist)
-        dist = dist * 60 * 1.1515 * 1.60934
+        dist = dist * 60 * 1.1515 * 1.60934 //1.60934 converts from American miles to km
         return dist
     }
     private fun deg2rad(deg : Double):Double{
