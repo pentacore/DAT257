@@ -10,6 +10,7 @@ class Picture(id: EntityID<Int>) : IntEntity(id) {
 
     var profile by Pictures.profile
     var title by Pictures.title
+    var base64 by Pictures.base64
     var description by Pictures.description
     var coordinates by Pictures.coordinates
     var createdAt by Pictures.createdAt

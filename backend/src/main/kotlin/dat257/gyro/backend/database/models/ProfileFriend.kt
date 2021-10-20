@@ -1,6 +1,5 @@
 package dat257.gyro.backend.database.models
 
-import dat257.gyro.backend.database.tables.ProfileBlocks
 import dat257.gyro.backend.database.tables.ProfileFriends
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
