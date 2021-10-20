@@ -33,6 +33,7 @@ jobs:
         run: ./gradlew check
       - name: Archive Test results
         uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: test-results
           path: |
@@ -42,6 +43,7 @@ jobs:
           retention-days: 7
       - name: Archive Test Report
         uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: test-report
           path: |
