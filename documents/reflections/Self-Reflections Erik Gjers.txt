@@ -1,0 +1,141 @@
+Week2(Prior to any work on the project aside from project scope)
+
+what do I want to learn or understand better?
+
+I am currently at a state where I can code ina  few languages and understand a a fair chunk of the principles that guide good coding.
+I haven't quite worked with other people in coding and am unsure of how my code will be clear to them.
+The only way to figure the latter part out is by doing and recieving feedback from the rest of the team. The previous point I will need to study once I understand the frameworks we are using for the project.
+
+
+how can I help someone else, or the entire team, to learn something new?
+
+I might be assuming that everyone is here to learn, but I have already made that clear to the rest of the group that such is my purpose.
+I can only hope that they can respond in kind - I have no control over other people's actions. 
+
+what is my contribution towards the team’s use of Scrum?
+
+I will attempt to keep things organized and keep meeting and an open dialogue regarding the entire process.
+
+what is my contribution towards the team’s deliveries?
+For this week I worked mostly on the mockup - I find the others experience to be useful in deciding a direction to go in.
+Also had some indepth conversations about app design with some of the other members.
+
+
+Week3(First sprint)
+
+what do I want to learn or understand better?
+The entire pipeline of how the work is produced. The process feels overwhelming in terms of the different frameworks and applications required to just launch the application.
+
+how can I help someone else, or the entire team, to learn something new?
+
+Due to my experience in making game prototypes and UIs I should have some skills that are applicable to both controls and the UI elements here.
+But also just working together on the tasks we have assigned could be useful, because we are all learning these tools bit by bit and it may not always be the same parts.
+
+what is my contribution towards the team's use of Scrum?
+
+I've acted as the PO and been advocating for a different perspective compared to the others in the group. 
+Often I find myself having understood things in a different manner from the others in the group and I make that opinion heard - for better or worse.
+While Jonathan has definitely done a ton to organize the group I would say I am a strong second in that.
+
+what is my contribution towards the team's deliveries?
+Last week I tried to deliver something, but wasted hours of time solving problems where others with more experience could have solved them in a few minutes. It was still a good learning experience and I feel a bit more comfortable with some of the tools(gradle, kotlin, exposed)
+
+Week3(Second sprint)
+
+what do I want to learn or understand better?
+I need to take more time with understanding some aspects of the software that we are going to implement (fragments, intents)
+I'll be doing android developer tutorials and have been doing so, but I could put more time into that. I also intend to review the code that the others write so that we have a cohesive style in the code.
+
+
+how can I help someone else, or the entire team, to learn something new?
+Try to get people more engaged. The guest lecturer also stated that people should have cams on to be more engaging so I am applying that to the meetings that we do have.
+
+what is my contribution towards the team's use of Scrum?
+Still acting as PO. Been at all the meetings and engaging with everyone. Trying to evaluate our tasks with the INVEST criteria, but mainly it's been on value and independence.
+
+what is my contribution towards the team's deliveries?
+I definitely helped with some prior experience with recognizing some syntax that could be applied to help solve certain errors we had
+and also implemented the first map marker and automated mapmovement and even the first mapView overall(helped with it). It's been a good week.
+
+
+Week4
+what do I want to learn or understand better?
+I'm interested to see the various frameworks coming together and see the refactoring be applied.
+
+how can I help someone else, or the entire team, to learn something new?
+We've had some folks not really engage. The plan is to talk to them to engage more with the rest of the group. I'll be taking that on.
+
+what is my contribution towards the team's use of Scrum?
+We had a bunch of callouts this week regarding our process. We prioritized learning as much as possible in terms of frameworks etc. instead of maximizing the product.
+When we had these discussions the atmosphere in the room was pretty bad overall, but it helped us to refocus on a more agile means of working. 
+I was also present for the reflection and suggested multiple solutions to problems that were being 
+
+what is my contribution towards the team's deliveries?
+Completion of a few tasks, attendance and engagement on all levels of discussion.
+
+
+Week5
+what do I want to learn or understand better?
+How we can structure our project better. 
+I felt that the code I provided was "temporary" It accomplished the tasks we want, but I wouldn't want to read that code had someone else written it.
+
+
+how can I help someone else, or the entire team, to learn something new?
+Being available, as basically everyone on the team is doing already.
+
+what is my contribution towards the team's use of Scrum?
+Plenty of promotion of looking for value for the user of the app. 
+Keeping the features that we focus on relevant to the agile process by applying INVEST criteria - mainly focused on value, independence and size.
+
+what is my contribution towards the team's deliveries?
+I did a bunch of code related work on getting features up and running. Was available for almost everything to discuss with folks.
+
+Week6
+what do I want to learn or understand better?
+How to effectively communicate. I found myself in a place where I try to spare emotions sometimes when I don't need to. 
+A part of the refactoring failure is mine to bear because I communicated two possibile reasons for the delays on features.
+I think that the better thing would have been to create the pattern much earlier.
+
+how can I help someone else, or the entire team, to learn something new?
+Gettings this refactoring done so we can all apply the pattern.
+
+what is my contribution towards the team's use of Scrum?
+I didn't really do anything different from previous weeks here regarding this. 
+Tried asking about how to get more value out of team reflections, which seemed like a no-go -  but an attempt was made.
+And usual attendance and engagements on all fronts from me.
+
+what is my contribution towards the team's deliveries?
+Pushing for the pubsub to be completed. Discussing this with Jonathan, who was creating the pattern to understand where it is at and offering the process of putting the pattern in now rather than later.
+Then doing testing on that. 
+
+Week7
+what do I want to learn or understand better?
+One thing that was noticeable was that some members were a bit lost when it came to the tasks if they weren't part of sprintplanning.
+I want to be better at documenting clearly for everyone to be able to understand at a glance. I thin the step there is to simply start documenting more details onto the tasks to be specific.
+The user stories cover a ton of the idea, but the tasks can sometimes be confusing in their choices of implementation.
+
+how can I help someone else, or the entire team, to learn something new?
+Show people the pubsub pattern. I think Jonathan and I are the ones working with it. The remainder of the team could use a jumpstart.
+
+what is my contribution towards the team's use of Scrum?
+Our process is pretty streamlined at this point. I partook in everything as usual, from sprint planning to scrum poker. 
+
+what is my contribution towards the team's deliveries?
+Partook in everything as per usual. Worked on implementing the new locationprovider with others and cleaning up the code and applying pubsub and understanding it.
+
+Week8
+what do I want to learn or understand better?
+How to maintain a quality of code in a team. I think I already understand a part of that process, it just needs to be tested.
+We should have had a more strict set of acceptance criteria and also a more strict definition of done. I think we had a good DoD for this project's outset, but it needed to be updated a bit along the way as
+we accrued the knowledge of some of the implementation. We had some vastly different ways of implementing the features and for reasons I still don't understand.
+Why did we use services for some parts and fragments for others, why did we intialize some thing in xml and other in code - most of it was simply a way
+of making things work. This who things needed to make sure that it was held to a higher standard than just "working". 
+
+how can I help someone else, or the entire team, to learn something new?
+Since it's the last week, not much. I guess just be honest throughout the reflections.
+
+what is my contribution towards the team's use of Scrum?
+We focused on small things to get the application ready for the presentation. Small improvements providing high value. 
+I think we all agreed on this approach. 
+what is my contribution towards the team's deliveries?
+Again organizing a bunch of the documentation and presentation, but also coded the communcation/calculation of distance for the route and time into the pubsub pattern.
