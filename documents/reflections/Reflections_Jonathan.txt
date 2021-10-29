@@ -1,0 +1,77 @@
+
+
+
+Week 1
+
+what do I want to learn or understand better?
+I want to learn leadership as well as learn more about the ins and outs of kotlin development from the android development standpoint
+how can I help someone else, or the entire team, to learn something new?
+As I have previous experience with Kotlin I can help people get comfortable with the basics of it.
+what is my contribution towards the team’s use of Scrum?
+Together with Martin we’ve set up both a working git work schedule as well as a basic agile workflow to start from
+what is my contribution towards the team’s deliveries?
+all of my answers above has helped towards making the teams deliveries
+
+Week 2
+what do I want to learn or understand better? / what do I want to learn or understand better?
+I’ve currently got issues dividing up my work into pieces
+I would like to be able to break it up into manageable pieces both for me and for others
+How to better divide portions of work up into smaller more easily manageable pieces.
+how can I help someone else, or the entire team, to learn something new?
+I’ve currently been working from a distance a lot. Being together in the real world will get me a bigger opportunity to help.
+what is my contribution towards the team’s use of Scrum?
+leading by example.
+what is my contribution towards the team’s deliveries?
+Creating code, deciding on architectural patterns to use.
+
+Week 3
+what do I want to learn or understand better? / what do I want to learn or understand better?
+Currently, I’m spending lots of time nitpicking when it comes to design. I was better at focusing on what’s important.
+I want to more efficiently understand what design patterns to pick when, when it comes to android development
+how can I help someone else, or the entire team, to learn something new?
+By just being there more consistently for people.
+what is my contribution towards the team’s use of Scrum?
+leading by example: Being organised during the daily standup.
+what is my contribution towards the team’s deliveries?
+By being more consistent in my contributions.
+Week 4
+what do I want to learn or understand better? / what do I want to learn or understand better?
+Currently
+I want to more efficiently understand what design patterns to pick when, when it comes to android development
+how can I help someone else, or the entire team, to learn something new?
+By just being there more consistently for people.
+what is my contribution towards the team’s use of Scrum?
+leading by example: Being organised during the daily standup.
+what is my contribution towards the team’s deliveries?
+By being more consistent in my contributions.
+Week 5
+what do I want to learn or understand better?
+Im currently all over the place with my branches, i want to become more organised in the way i work. And more disciplined when it comes to following a working structure.
+I think having a list of the workflow specified in front of me might make my workflow more easy.
+how can I help someone else, or the entire team, to learn something new?
+Again my consistency is whats failing me. By keeping my schedule more consistant and during more normal hours I think I could be of more help.
+what is my contribution towards the team’s use of Scrum?
+This week it has not been one of lots of contribution from my part as ive been dealing with family loss. Making working normal hours impossible.
+what is my contribution towards the team’s deliveries?
+It was not great this week. But i managed to attend and take an active part in the meetings.  Hopefully “normalising” being talkative in our meetings.
+Week 6
+
+what do I want to learn or understand better?
+	Currently im going
+how can I help someone else, or the entire team, to learn something new?
+Again my consistency is whats failing me. By keeping my schedule more consistant and during more normal hours I think I could be of more help.
+what is my contribution towards the team’s use of Scrum?
+This week it has not been one of lots of contribution from my part as ive been dealing with family loss. Making working normal hours impossible.
+what is my contribution towards the team’s deliveries?
+It was not great this week.
+Week 7
+What do I want to learn or understand better?
+
+As we are nearing the end of the course I feel like ive just started getting to grips with the main libraries and design packages used within android development. I want to put my knowledge into practice, and hone them
+
+how can I help someone else, or the entire team, to learn something new?
+I can let them learn it in their own way. I’ve been trying to become more pedagogical and through the sprints and i’ve realised the best way to teach people is through their prefered way of learning.
+what is my contribution towards the team’s use of Scrum?
+Attempting to figure out how and what parts of the massive field of agile development best can help us as a group.
+what is my contribution towards the team’s deliveries?
+I’ve through the sprints mainly focused on architectural patterns and the big picture of the front-end. It’s been an interesting journey.
