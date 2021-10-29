@@ -26,7 +26,6 @@ class WalkFragment : Fragment(), Publisher, Subscriber {
     private lateinit var walkPlay: Button
     private lateinit var walkReset: Button
     private var timerStarted = false
-    private var distanceOfRoute = 0.0
     private lateinit var serviceIntent: Intent
     private var time = 0.0
     override fun onCreateView(
@@ -63,6 +62,7 @@ class WalkFragment : Fragment(), Publisher, Subscriber {
             walkReset.setOnClickListener {
                 publish(ChannelName.RecordingControl, Message(RecordingControllerInstruction.Stop))
                 resetTimer()
+                updateDistanceString(0.0)
                 timerStarted=false
                 walkPlay.setBackgroundResource(R.drawable.ic_baseline_play_circle_24)
             }
@@ -71,20 +71,16 @@ class WalkFragment : Fragment(), Publisher, Subscriber {
         serviceIntent = Intent(activity?.applicationContext, TimerService::class.java)
         requireActivity().registerReceiver(updateTime, IntentFilter(TimerService.TIMER_UPDATED))
         return view
-
-
     }
 
     override fun onUpdate(source: ChannelName, message: Message<*>) {
         when (source) {
             ChannelName.Distance -> updateDistanceString(message.payload as Double)
-            else -> Log.e("MapFragment/onUpdate: ", "Unimplemented Channelsource")
+            else -> Log.e("WalkFragment/onUpdate: ", "Unimplemented Channel Source")
         }
-        updateDistanceString(message.payload as Double)
     }
 
-    fun updateDistanceString(d: Double) {
-        //TODO: updateDistanceString
+    private fun updateDistanceString(d: Double) {
         val distance = String.format("%.3f", d)
         view?.findViewById<TextView>(R.id.distance_string)?.text = distance
     }
@@ -95,17 +91,10 @@ class WalkFragment : Fragment(), Publisher, Subscriber {
 
 
     }
-    fun resetTimer() {
+    private fun resetTimer() {
         stopTimer()
         time = 0.0
         updateTimerString()
-    }
-
-    fun startStopTimer() {
-        if (timerStarted)
-            stopTimer()
-        else
-            startTimer()
     }
 
     @SuppressLint("SetTextI18n", "UseCompatLoadingForDrawables")
@@ -114,7 +103,6 @@ class WalkFragment : Fragment(), Publisher, Subscriber {
         activity?.startService(serviceIntent)
         view?.findViewById<com.google.android.material.button.MaterialButton>(R.id.startStopButton)
             ?.setBackgroundResource(R.drawable.ic_baseline_pause_circle_24)
-
     }
 
     @SuppressLint("SetTextI18n", "UseCompatLoadingForDrawables")
